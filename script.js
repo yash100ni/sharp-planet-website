@@ -1,0 +1,320 @@
+/* ==========================================================================
+   SHARP PLANET — SCRIPT
+   Smooth scroll, scroll reveals, hero constellation, counters,
+   magnetic buttons, ecosystem modals, navbar behaviour.
+   ========================================================================== */
+
+document.addEventListener("DOMContentLoaded", () => {
+
+  /* Lucide icons */
+  if (window.lucide) lucide.createIcons();
+  else window.addEventListener("load", () => window.lucide && lucide.createIcons());
+
+  const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  /* ------------------------------------------------------------
+     1. LENIS SMOOTH SCROLL
+  ------------------------------------------------------------ */
+  let lenis;
+  if (window.Lenis && !prefersReducedMotion) {
+    lenis = new Lenis({ lerp: 0.1, smoothWheel: true });
+    function raf(time) {
+      lenis.raf(time);
+      requestAnimationFrame(raf);
+    }
+    requestAnimationFrame(raf);
+
+    if (window.gsap && window.ScrollTrigger) {
+      lenis.on("scroll", ScrollTrigger.update);
+      gsap.ticker.add((time) => lenis.raf(time * 1000));
+      gsap.ticker.lagSmoothing(0);
+    }
+  }
+
+  /* Anchor links -> lenis scrollTo */
+  document.querySelectorAll('a[href^="#"]').forEach((link) => {
+    link.addEventListener("click", (e) => {
+      const id = link.getAttribute("href");
+      if (id.length > 1) {
+        const target = document.querySelector(id);
+        if (target) {
+          e.preventDefault();
+          if (lenis) lenis.scrollTo(target, { offset: -20 });
+          else target.scrollIntoView({ behavior: "smooth" });
+          closeMobileMenu();
+        }
+      }
+    });
+  });
+
+  /* ------------------------------------------------------------
+     2. NAVBAR — scrolled state + mobile burger
+  ------------------------------------------------------------ */
+  const navbar = document.getElementById("navbar");
+  const burger = document.getElementById("navBurger");
+  const navMobile = document.getElementById("navMobile");
+
+  const onScroll = () => {
+    if (window.scrollY > 40) navbar.classList.add("is-scrolled");
+    else navbar.classList.remove("is-scrolled");
+  };
+  window.addEventListener("scroll", onScroll, { passive: true });
+  onScroll();
+
+  function closeMobileMenu() {
+    navMobile.classList.remove("is-open");
+    burger.setAttribute("aria-expanded", "false");
+  }
+  burger.addEventListener("click", () => {
+    const isOpen = navMobile.classList.toggle("is-open");
+    burger.setAttribute("aria-expanded", String(isOpen));
+  });
+
+  /* ------------------------------------------------------------
+     3. SCROLL REVEALS (GSAP ScrollTrigger, fallback IntersectionObserver)
+  ------------------------------------------------------------ */
+  const revealEls = document.querySelectorAll(".reveal-up");
+
+  if (window.gsap && window.ScrollTrigger) {
+    gsap.registerPlugin(ScrollTrigger);
+    revealEls.forEach((el, i) => {
+      ScrollTrigger.create({
+        trigger: el,
+        start: "top 88%",
+        once: true,
+        onEnter: () => {
+          gsap.to(el, {
+            opacity: 1, y: 0, duration: 0.9,
+            delay: (i % 4) * 0.06,
+            ease: "power3.out",
+          });
+          el.classList.add("is-visible");
+        },
+      });
+    });
+
+    /* Hero headline line reveal */
+    gsap.to(".reveal-line__inner", {
+      y: "0%", duration: 1.1, ease: "power4.out", stagger: 0.1, delay: 0.2,
+    });
+  } else {
+    // Fallback
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add("is-visible");
+          io.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.15 });
+    revealEls.forEach((el) => io.observe(el));
+    document.querySelectorAll(".reveal-line__inner").forEach((el) => (el.style.transform = "translateY(0)"));
+  }
+
+  /* ------------------------------------------------------------
+     4. ANIMATED COUNTERS
+  ------------------------------------------------------------ */
+  function formatNumber(num, format) {
+    if (format === "compact") {
+      if (num >= 1000) return Math.round(num / 1000) + "K";
+    }
+    return num.toLocaleString("en-US");
+  }
+
+  const counters = document.querySelectorAll(".stat__num");
+  const counterObserver = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      if (!entry.isIntersecting) return;
+      const el = entry.target;
+      const target = parseInt(el.dataset.count, 10);
+      const suffix = el.dataset.suffix || "";
+      const format = el.dataset.format || "default";
+      const duration = 1800;
+      const start = performance.now();
+
+      function tick(now) {
+        const progress = Math.min((now - start) / duration, 1);
+        const eased = 1 - Math.pow(1 - progress, 3);
+        const value = Math.floor(eased * target);
+        el.textContent = formatNumber(value, format) + suffix;
+        if (progress < 1) requestAnimationFrame(tick);
+        else el.textContent = formatNumber(target, format) + suffix;
+      }
+      requestAnimationFrame(tick);
+      counterObserver.unobserve(el);
+    });
+  }, { threshold: 0.6 });
+  counters.forEach((el) => counterObserver.observe(el));
+
+  /* ------------------------------------------------------------
+     5. MAGNETIC BUTTONS
+  ------------------------------------------------------------ */
+  if (!prefersReducedMotion && window.matchMedia("(pointer: fine)").matches) {
+    document.querySelectorAll(".magnetic").forEach((btn) => {
+      btn.addEventListener("mousemove", (e) => {
+        const rect = btn.getBoundingClientRect();
+        const x = e.clientX - rect.left - rect.width / 2;
+        const y = e.clientY - rect.top - rect.height / 2;
+        btn.style.transform = `translate(${x * 0.25}px, ${y * 0.35}px)`;
+      });
+      btn.addEventListener("mouseleave", () => {
+        btn.style.transform = "translate(0,0)";
+      });
+    });
+  }
+
+  /* ------------------------------------------------------------
+     6. ECOSYSTEM MODALS
+  ------------------------------------------------------------ */
+  const overlay = document.getElementById("modalOverlay");
+  const openers = document.querySelectorAll("[data-modal]");
+  const closers = document.querySelectorAll("[data-close]");
+
+  function openModal(key) {
+    const modal = document.getElementById(`modal-${key}`);
+    if (!modal) return;
+    overlay.classList.add("is-open");
+    document.querySelectorAll(".modal").forEach((m) => m.classList.remove("is-active"));
+    modal.classList.add("is-active");
+    document.body.style.overflow = "hidden";
+  }
+  function closeModal() {
+    overlay.classList.remove("is-open");
+    document.body.style.overflow = "";
+  }
+  openers.forEach((btn) => btn.addEventListener("click", () => openModal(btn.dataset.modal)));
+  closers.forEach((btn) => btn.addEventListener("click", closeModal));
+  overlay.addEventListener("click", (e) => { if (e.target === overlay) closeModal(); });
+  document.addEventListener("keydown", (e) => { if (e.key === "Escape") closeModal(); });
+
+  /* ------------------------------------------------------------
+     7. HERO — NEURAL CONSTELLATION (signature element)
+     A field of nodes that drift slowly and connect to nearby
+     nodes and to the cursor, symbolising synapses forming.
+  ------------------------------------------------------------ */
+  const canvas = document.getElementById("constellation");
+  if (canvas) {
+    const ctx = canvas.getContext("2d");
+    let w, h, nodes, mouse = { x: -9999, y: -9999 };
+    const NODE_COUNT_DESKTOP = 70;
+    const NODE_COUNT_MOBILE = 34;
+    const LINK_DIST = 150;
+
+    function resize() {
+      const hero = canvas.closest(".hero");
+      w = canvas.width = hero.offsetWidth;
+      h = canvas.height = hero.offsetHeight;
+      const count = w < 720 ? NODE_COUNT_MOBILE : NODE_COUNT_DESKTOP;
+      nodes = Array.from({ length: count }, () => ({
+        x: Math.random() * w,
+        y: Math.random() * h,
+        vx: (Math.random() - 0.5) * 0.25,
+        vy: (Math.random() - 0.5) * 0.25,
+        r: Math.random() * 1.6 + 1,
+      }));
+    }
+    resize();
+    window.addEventListener("resize", resize);
+
+    canvas.addEventListener("mousemove", (e) => {
+      const rect = canvas.getBoundingClientRect();
+      mouse.x = e.clientX - rect.left;
+      mouse.y = e.clientY - rect.top;
+    });
+    canvas.addEventListener("mouseleave", () => { mouse.x = -9999; mouse.y = -9999; });
+
+    function draw() {
+      ctx.clearRect(0, 0, w, h);
+
+      // update
+      nodes.forEach((n) => {
+        n.x += n.vx; n.y += n.vy;
+        if (n.x < 0 || n.x > w) n.vx *= -1;
+        if (n.y < 0 || n.y > h) n.vy *= -1;
+      });
+
+      // links
+      for (let i = 0; i < nodes.length; i++) {
+        for (let j = i + 1; j < nodes.length; j++) {
+          const a = nodes[i], b = nodes[j];
+          const dx = a.x - b.x, dy = a.y - b.y;
+          const dist = Math.sqrt(dx * dx + dy * dy);
+          if (dist < LINK_DIST) {
+            ctx.strokeStyle = `rgba(37,99,235,${0.14 * (1 - dist / LINK_DIST)})`;
+            ctx.lineWidth = 1;
+            ctx.beginPath();
+            ctx.moveTo(a.x, a.y);
+            ctx.lineTo(b.x, b.y);
+            ctx.stroke();
+          }
+        }
+        // link to mouse
+        const dxm = nodes[i].x - mouse.x, dym = nodes[i].y - mouse.y;
+        const dm = Math.sqrt(dxm * dxm + dym * dym);
+        if (dm < LINK_DIST * 1.3) {
+          ctx.strokeStyle = `rgba(56,189,248,${0.35 * (1 - dm / (LINK_DIST * 1.3))})`;
+          ctx.lineWidth = 1.2;
+          ctx.beginPath();
+          ctx.moveTo(nodes[i].x, nodes[i].y);
+          ctx.lineTo(mouse.x, mouse.y);
+          ctx.stroke();
+        }
+      }
+
+      // nodes
+      nodes.forEach((n) => {
+        ctx.beginPath();
+        ctx.arc(n.x, n.y, n.r, 0, Math.PI * 2);
+        ctx.fillStyle = "rgba(37,99,235,0.5)";
+        ctx.fill();
+      });
+
+      requestAnimationFrame(draw);
+    }
+    if (!prefersReducedMotion) draw();
+  }
+
+  /* ------------------------------------------------------------
+     8. FUTURE VISION — starfield canvas
+  ------------------------------------------------------------ */
+  const starCanvas = document.getElementById("starfield");
+  if (starCanvas) {
+    const sctx = starCanvas.getContext("2d");
+    let sw, sh, stars;
+
+    function resizeStars() {
+      const section = starCanvas.closest(".vision");
+      sw = starCanvas.width = section.offsetWidth;
+      sh = starCanvas.height = section.offsetHeight;
+      stars = Array.from({ length: 160 }, () => ({
+        x: Math.random() * sw,
+        y: Math.random() * sh,
+        r: Math.random() * 1.4 + 0.3,
+        tw: Math.random() * Math.PI * 2,
+      }));
+    }
+    resizeStars();
+    window.addEventListener("resize", resizeStars);
+
+    function drawStars(t) {
+      sctx.clearRect(0, 0, sw, sh);
+      stars.forEach((s) => {
+        const twinkle = 0.5 + 0.5 * Math.sin(t / 900 + s.tw);
+        sctx.beginPath();
+        sctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
+        sctx.fillStyle = `rgba(255,255,255,${0.25 + twinkle * 0.55})`;
+        sctx.fill();
+      });
+      requestAnimationFrame(drawStars);
+    }
+    if (!prefersReducedMotion) requestAnimationFrame(drawStars);
+    else drawStars(0);
+  }
+
+  /* ------------------------------------------------------------
+     9. FOOTER YEAR
+  ------------------------------------------------------------ */
+  const yearEl = document.getElementById("year");
+  if (yearEl) yearEl.textContent = new Date().getFullYear();
+
+});

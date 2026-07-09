@@ -1,0 +1,650 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sharp Planet — Building Future-Ready Minds</title>
+<meta name="description" content="Sharp Planet helps children upgrade how they learn — memory, focus, thinking speed and confidence — through the scientifically designed KSCode™ system.">
+
+<!-- Fonts -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;0,800;1,500&family=Fraunces:ital,opsz,wght@0,9..144,500;1,9..144,500&display=swap" rel="stylesheet">
+
+<!-- Icons -->
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js" defer></script>
+
+<!-- Styles -->
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- =========================================================
+     CUSTOM CURSOR / GRAIN OVERLAY
+========================================================= -->
+<div class="grain-overlay" aria-hidden="true"></div>
+
+<!-- =========================================================
+     1. NAVBAR — floating, glass, sticky
+========================================================= -->
+<header class="navbar" id="navbar">
+  <div class="navbar__inner">
+    <a href="#hero" class="navbar__logo" aria-label="Sharp Planet home">
+      <span class="navbar__logo-mark">
+        <img src="assets/images/logo-icon.png" alt="" width="34" height="34">
+      </span>
+      <span class="navbar__logo-text">Sharp Planet</span>
+    </a>
+
+    <nav class="navbar__links" aria-label="Primary">
+      <a href="#ecosystem" class="navbar__link">Programs</a>
+      <a href="#stories" class="navbar__link">Stories</a>
+      <a href="#founder" class="navbar__link">About</a>
+      <a href="#final-cta" class="navbar__link">Contact</a>
+    </nav>
+
+    <a href="#final-cta" class="btn btn--primary btn--small navbar__cta">
+      <span>Book Assessment</span>
+    </a>
+
+    <button class="navbar__burger" id="navBurger" aria-label="Open menu" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+
+  <div class="navbar__mobile" id="navMobile">
+    <a href="#ecosystem" class="navbar__mobile-link">Programs</a>
+    <a href="#stories" class="navbar__mobile-link">Stories</a>
+    <a href="#founder" class="navbar__mobile-link">About</a>
+    <a href="#final-cta" class="navbar__mobile-link">Contact</a>
+    <a href="#final-cta" class="btn btn--primary">Book Assessment</a>
+  </div>
+</header>
+
+<main>
+
+<!-- =========================================================
+     2. HERO SECTION
+========================================================= -->
+<section class="hero" id="hero">
+
+  <!-- Signature element: Neural Constellation — an animated synapse
+       network that forms and pulses, symbolising a mind building
+       new connections. Mouse-reactive, drawn fresh with JS. -->
+  <canvas id="constellation" class="hero__constellation" aria-hidden="true"></canvas>
+
+  <div class="hero__glow hero__glow--1" aria-hidden="true"></div>
+  <div class="hero__glow hero__glow--2" aria-hidden="true"></div>
+
+  <div class="hero__inner">
+    <p class="eyebrow reveal-up">
+      <span class="eyebrow__dot"></span> A new operating system for learning
+    </p>
+
+    <h1 class="hero__headline">
+      <span class="reveal-line"><span class="reveal-line__inner">Building</span></span>
+      <span class="reveal-line"><span class="reveal-line__inner">Future-Ready</span></span>
+      <span class="reveal-line"><span class="reveal-line__inner"><em>Minds.</em></span></span>
+    </h1>
+
+    <p class="hero__sub reveal-up">
+      Every child has extraordinary potential. We don't teach children what to study —
+      we teach them how to learn, remember, focus and think.
+    </p>
+
+    <div class="hero__actions reveal-up">
+      <a href="#final-cta" class="btn btn--primary btn--large magnetic">
+        <span>Book Free Assessment</span>
+        <i data-lucide="arrow-up-right"></i>
+      </a>
+      <a href="#kscode" class="btn btn--ghost btn--large magnetic">
+        <span>Explore KSCode™</span>
+      </a>
+    </div>
+
+    <div class="hero__stats reveal-up">
+      <div class="stat">
+        <span class="stat__num" data-count="15" data-suffix="+">0</span>
+        <span class="stat__label">Years Experience</span>
+      </div>
+      <div class="stat">
+        <span class="stat__num" data-count="650" data-suffix="+">0</span>
+        <span class="stat__label">Workshops Delivered</span>
+      </div>
+      <div class="stat">
+        <span class="stat__num" data-count="300000" data-suffix="+" data-format="compact">0</span>
+        <span class="stat__label">Minds Impacted</span>
+      </div>
+      <div class="stat">
+        <span class="stat__num" data-count="1000" data-suffix="+">0</span>
+        <span class="stat__label">Schools &amp; Parents</span>
+      </div>
+    </div>
+  </div>
+
+  <button class="hero__scroll" id="scrollIndicator" aria-label="Scroll to explore">
+    <span>Scroll</span>
+    <i data-lucide="chevron-down"></i>
+  </button>
+</section>
+
+<!-- =========================================================
+     3. EVERY PARENT'S STORY — emotional storytelling
+========================================================= -->
+<section class="parent-story" id="parent-story">
+  <div class="container parent-story__grid">
+
+    <div class="parent-story__copy">
+      <p class="eyebrow eyebrow--dark reveal-up"><span class="eyebrow__dot"></span> A story you already know</p>
+      <h2 class="section-title reveal-up">Every parent's story<br>sounds a little like this.</h2>
+      <p class="section-lead reveal-up">
+        Your child is bright. You know it. Teachers know it. But somewhere between
+        the homework battles and the exam anxiety, that brightness gets buried
+        under habits nobody ever taught them to fix.
+      </p>
+
+      <div class="story-cards">
+        <div class="story-card reveal-up">
+          <i data-lucide="brain-cog"></i>
+          <h3>Forgets quickly</h3>
+          <p>Studies for hours, remembers for a day.</p>
+        </div>
+        <div class="story-card reveal-up">
+          <i data-lucide="shield-alert"></i>
+          <h3>Low confidence</h3>
+          <p>Knows the answer, freezes when asked.</p>
+        </div>
+        <div class="story-card reveal-up">
+          <i data-lucide="scan-eye"></i>
+          <h3>Distraction</h3>
+          <p>Ten minutes of focus, an hour of drifting.</p>
+        </div>
+        <div class="story-card reveal-up">
+          <i data-lucide="heart-crack"></i>
+          <h3>Exam stress</h3>
+          <p>Dreads the test more than the topic.</p>
+        </div>
+      </div>
+
+      <p class="parent-story__hope reveal-up">
+        <i data-lucide="sparkles"></i>
+        None of this is who your child is. It's just how they were taught to learn —
+        and that can change, faster than you think.
+      </p>
+    </div>
+
+    <div class="parent-story__art">
+      <!-- hand-drawn vector illustration: a child's mind lighting up -->
+      <svg viewBox="0 0 480 560" class="story-illustration" aria-hidden="true">
+        <defs>
+          <linearGradient id="childGrad" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0" stop-color="#2563EB"/>
+            <stop offset="1" stop-color="#38BDF8"/>
+          </linearGradient>
+        </defs>
+        <ellipse cx="240" cy="500" rx="150" ry="24" fill="#071B3A" opacity="0.06"/>
+        <path d="M240 90c60 0 108 48 108 108 0 44-24 78-58 96v40c0 14-11 24-24 24h-52c-13 0-24-10-24-24v-40c-34-18-58-52-58-96 0-60 48-108 108-108z" fill="#fff" stroke="url(#childGrad)" stroke-width="3"/>
+        <circle class="pulse-node" cx="200" cy="180" r="6" fill="#38BDF8"/>
+        <circle class="pulse-node" cx="280" cy="170" r="5" fill="#2563EB"/>
+        <circle class="pulse-node" cx="240" cy="220" r="7" fill="#10B981"/>
+        <circle class="pulse-node" cx="190" cy="230" r="4" fill="#38BDF8"/>
+        <circle class="pulse-node" cx="290" cy="225" r="4" fill="#2563EB"/>
+        <path d="M200 180 L240 220 L280 170 M240 220 L190 230 M240 220 L290 225" stroke="#2563EB" stroke-width="1.4" opacity="0.4"/>
+        <path d="M118 320c-30 30-30 78 0 108M362 320c30 30 30 78 0 108" stroke="url(#childGrad)" stroke-width="4" stroke-linecap="round" fill="none" opacity="0.5"/>
+      </svg>
+      <div class="story-art-badge glass-card">
+        <i data-lucide="trending-up"></i>
+        <div>
+          <strong>3.4x</strong>
+          <span>faster recall reported</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- =========================================================
+     4. THE PROBLEM — Traditional vs Future comparison
+========================================================= -->
+<section class="problem" id="problem">
+  <div class="container">
+    <p class="eyebrow eyebrow--dark reveal-up"><span class="eyebrow__dot"></span> The real problem</p>
+    <h2 class="section-title reveal-up">School teaches subjects.<br>Nobody teaches the brain <em>how</em> to use them.</h2>
+
+    <div class="compare" id="compareBlock">
+      <div class="compare__col compare__col--traditional reveal-up">
+        <span class="compare__tag">Traditional Education</span>
+        <ul class="compare__list">
+          <li><i data-lucide="x"></i> Focuses on syllabus, not skills</li>
+          <li><i data-lucide="x"></i> Memorization by repetition</li>
+          <li><i data-lucide="x"></i> One method for every child</li>
+          <li><i data-lucide="x"></i> Confidence is a side effect, if at all</li>
+          <li><i data-lucide="x"></i> Stress-driven performance</li>
+        </ul>
+      </div>
+
+      <div class="compare__vs">
+        <span>VS</span>
+      </div>
+
+      <div class="compare__col compare__col--future reveal-up">
+        <span class="compare__tag compare__tag--accent">Future Learning</span>
+        <ul class="compare__list">
+          <li><i data-lucide="check"></i> Builds the ability to learn anything</li>
+          <li><i data-lucide="check"></i> Memory systems built on science</li>
+          <li><i data-lucide="check"></i> Personalised to each mind</li>
+          <li><i data-lucide="check"></i> Confidence engineered by design</li>
+          <li><i data-lucide="check"></i> Calm, focused performance</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- timeline -->
+    <div class="timeline reveal-up">
+      <div class="timeline__track"></div>
+      <div class="timeline__point">
+        <span class="timeline__dot"></span>
+        <span class="timeline__label">Today<br><small>Cramming &amp; forgetting</small></span>
+      </div>
+      <div class="timeline__point">
+        <span class="timeline__dot"></span>
+        <span class="timeline__label">30 Days<br><small>New learning habits form</small></span>
+      </div>
+      <div class="timeline__point">
+        <span class="timeline__dot"></span>
+        <span class="timeline__label">90 Days<br><small>Retention becomes automatic</small></span>
+      </div>
+      <div class="timeline__point timeline__point--final">
+        <span class="timeline__dot"></span>
+        <span class="timeline__label">Beyond<br><small>A future-ready mind</small></span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- =========================================================
+     5. OUR PHILOSOPHY — six floating belief cards
+========================================================= -->
+<section class="philosophy" id="philosophy">
+  <div class="container">
+    <p class="eyebrow reveal-up"><span class="eyebrow__dot"></span> What we believe</p>
+    <h2 class="section-title section-title--light reveal-up">Six beliefs behind<br>everything we build.</h2>
+
+    <div class="belief-grid">
+      <div class="belief-card reveal-up">
+        <i data-lucide="sprout"></i>
+        <h3>Potential is universal</h3>
+        <p>Every child is capable of extraordinary learning — ability is a skill, not a gift.</p>
+      </div>
+      <div class="belief-card reveal-up">
+        <i data-lucide="compass"></i>
+        <h3>How beats what</h3>
+        <p>The method of learning matters more than the material being learned.</p>
+      </div>
+      <div class="belief-card reveal-up">
+        <i data-lucide="flask-conical"></i>
+        <h3>Science, not shortcuts</h3>
+        <p>Every technique is grounded in cognitive science, not gimmicks or hacks.</p>
+      </div>
+      <div class="belief-card reveal-up">
+        <i data-lucide="smile"></i>
+        <h3>Confidence is built</h3>
+        <p>Self-belief is engineered through small, repeated wins — not motivational talk.</p>
+      </div>
+      <div class="belief-card reveal-up">
+        <i data-lucide="users-round"></i>
+        <h3>Parents are partners</h3>
+        <p>Lasting change happens when families and mentors grow together.</p>
+      </div>
+      <div class="belief-card reveal-up">
+        <i data-lucide="rocket"></i>
+        <h3>Future over syllabus</h3>
+        <p>We prepare minds for a world that hasn't finished changing yet.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- =========================================================
+     6. SHARP PLANET ECOSYSTEM
+========================================================= -->
+<section class="ecosystem" id="ecosystem">
+  <div class="container">
+    <p class="eyebrow eyebrow--dark reveal-up"><span class="eyebrow__dot"></span> The ecosystem</p>
+    <h2 class="section-title reveal-up">One mission.<br>Four ways we deliver it.</h2>
+
+    <div class="ecosystem-grid">
+      <button class="ecosystem-card reveal-up" data-modal="kscode">
+        <span class="ecosystem-card__icon"><i data-lucide="brain-circuit"></i></span>
+        <h3>KSCode™</h3>
+        <p>Our signature system for learning, memory and focus.</p>
+        <span class="ecosystem-card__more">Learn more <i data-lucide="arrow-right"></i></span>
+      </button>
+      <button class="ecosystem-card reveal-up" data-modal="parenting">
+        <span class="ecosystem-card__icon"><i data-lucide="heart-handshake"></i></span>
+        <h3>Sharp Parenting</h3>
+        <p>Practical coaching so parents can nurture the change at home.</p>
+        <span class="ecosystem-card__more">Learn more <i data-lucide="arrow-right"></i></span>
+      </button>
+      <button class="ecosystem-card reveal-up" data-modal="ai">
+        <span class="ecosystem-card__icon"><i data-lucide="sparkles"></i></span>
+        <h3>Sharp AI</h3>
+        <p>Adaptive practice that responds to how each child actually learns.</p>
+        <span class="ecosystem-card__more">Learn more <i data-lucide="arrow-right"></i></span>
+      </button>
+      <button class="ecosystem-card reveal-up" data-modal="academy">
+        <span class="ecosystem-card__icon"><i data-lucide="graduation-cap"></i></span>
+        <h3>Sharp Planet Academy</h3>
+        <p>Structured cohorts and school partnerships at scale.</p>
+        <span class="ecosystem-card__more">Learn more <i data-lucide="arrow-right"></i></span>
+      </button>
+    </div>
+  </div>
+</section>
+
+<!-- Ecosystem modals -->
+<div class="modal-overlay" id="modalOverlay">
+  <div class="modal" id="modal-kscode">
+    <button class="modal__close" data-close><i data-lucide="x"></i></button>
+    <span class="modal__icon"><i data-lucide="brain-circuit"></i></span>
+    <h3>KSCode™</h3>
+    <p>A step-by-step framework that trains six core learning abilities —
+    Learning, Memory, Thinking, Confidence, Focus and Performance — through
+    weekly practice, games and coached feedback.</p>
+    <a href="#final-cta" class="btn btn--primary">Book Free Assessment</a>
+  </div>
+  <div class="modal" id="modal-parenting">
+    <button class="modal__close" data-close><i data-lucide="x"></i></button>
+    <span class="modal__icon"><i data-lucide="heart-handshake"></i></span>
+    <h3>Sharp Parenting</h3>
+    <p>Workshops and one-on-one coaching that give parents the language and
+    tools to reinforce KSCode™ habits at home, without pressure or conflict.</p>
+    <a href="#final-cta" class="btn btn--primary">Book Free Assessment</a>
+  </div>
+  <div class="modal" id="modal-ai">
+    <button class="modal__close" data-close><i data-lucide="x"></i></button>
+    <span class="modal__icon"><i data-lucide="sparkles"></i></span>
+    <h3>Sharp AI</h3>
+    <p>An adaptive practice companion that studies how a child learns best
+    and adjusts difficulty, pacing and format in real time.</p>
+    <a href="#final-cta" class="btn btn--primary">Book Free Assessment</a>
+  </div>
+  <div class="modal" id="modal-academy">
+    <button class="modal__close" data-close><i data-lucide="x"></i></button>
+    <span class="modal__icon"><i data-lucide="graduation-cap"></i></span>
+    <h3>Sharp Planet Academy</h3>
+    <p>Cohort-based programs and school partnerships that bring the full
+    KSCode™ curriculum into classrooms at scale.</p>
+    <a href="#final-cta" class="btn btn--primary">Book Free Assessment</a>
+  </div>
+</div>
+
+<!-- =========================================================
+     7. WHY KSCODE™ — six pillars, hexagon layout
+========================================================= -->
+<section class="pillars" id="kscode">
+  <div class="container">
+    <p class="eyebrow reveal-up"><span class="eyebrow__dot"></span> Why KSCode™</p>
+    <h2 class="section-title reveal-up">Six abilities.<br>One future-ready mind.</h2>
+
+    <div class="hex-grid">
+      <div class="hex-item reveal-up">
+        <div class="hex"><i data-lucide="book-open-check"></i></div>
+        <h3>Learning</h3>
+        <p>Absorb new concepts faster and with less effort.</p>
+      </div>
+      <div class="hex-item reveal-up">
+        <div class="hex"><i data-lucide="database"></i></div>
+        <h3>Memory</h3>
+        <p>Retain what's learned for months, not hours.</p>
+      </div>
+      <div class="hex-item reveal-up">
+        <div class="hex"><i data-lucide="lightbulb"></i></div>
+        <h3>Thinking</h3>
+        <p>Reason through problems instead of memorising steps.</p>
+      </div>
+      <div class="hex-item reveal-up">
+        <div class="hex"><i data-lucide="badge-check"></i></div>
+        <h3>Confidence</h3>
+        <p>Speak up, take risks, own the answer.</p>
+      </div>
+      <div class="hex-item reveal-up">
+        <div class="hex"><i data-lucide="crosshair"></i></div>
+        <h3>Focus</h3>
+        <p>Sustain deep attention without constant reminders.</p>
+      </div>
+      <div class="hex-item reveal-up">
+        <div class="hex"><i data-lucide="trophy"></i></div>
+        <h3>Performance</h3>
+        <p>Turn ability into results — in exams and beyond.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- =========================================================
+     8. TRANSFORMATION STORIES — testimonial carousel
+========================================================= -->
+<section class="stories" id="stories">
+  <div class="container">
+    <p class="eyebrow eyebrow--dark reveal-up"><span class="eyebrow__dot"></span> Real transformations</p>
+    <h2 class="section-title reveal-up">Stories from parents,<br>students and schools.</h2>
+  </div>
+
+  <div class="stories-track-wrap">
+    <div class="stories-track" id="storiesTrack">
+
+      <article class="story-testimonial glass-card">
+        <div class="story-testimonial__media">
+          <svg viewBox="0 0 100 100" aria-hidden="true"><circle cx="50" cy="38" r="20" fill="#DBEAFE"/><path d="M14 96c4-24 20-36 36-36s32 12 36 36" fill="#DBEAFE"/></svg>
+          <span class="play-btn"><i data-lucide="play"></i></span>
+        </div>
+        <p>“My son used to forget chapters within a week. Three months into KSCode™, he's teaching his sister the same tricks.”</p>
+        <strong>Anita R.</strong><span>Parent, Grade 6</span>
+      </article>
+
+      <article class="story-testimonial glass-card">
+        <div class="story-testimonial__media">
+          <svg viewBox="0 0 100 100" aria-hidden="true"><circle cx="50" cy="38" r="20" fill="#DCFCE7"/><path d="M14 96c4-24 20-36 36-36s32 12 36 36" fill="#DCFCE7"/></svg>
+          <span class="play-btn"><i data-lucide="play"></i></span>
+        </div>
+        <p>“I stopped being scared of the whiteboard. Now I put my hand up first.”</p>
+        <strong>Devansh P.</strong><span>Student, Grade 8</span>
+      </article>
+
+      <article class="story-testimonial glass-card">
+        <div class="story-testimonial__media">
+          <svg viewBox="0 0 100 100" aria-hidden="true"><circle cx="50" cy="38" r="20" fill="#E0E7FF"/><path d="M14 96c4-24 20-36 36-36s32 12 36 36" fill="#E0E7FF"/></svg>
+          <span class="play-btn"><i data-lucide="play"></i></span>
+        </div>
+        <p>“We rolled KSCode™ out across two sections. Attention spans and test scores both moved within a term.”</p>
+        <strong>Meera K.</strong><span>Principal, Riverdale School</span>
+      </article>
+
+      <article class="story-testimonial glass-card">
+        <div class="story-testimonial__media">
+          <svg viewBox="0 0 100 100" aria-hidden="true"><circle cx="50" cy="38" r="20" fill="#CFFAFE"/><path d="M14 96c4-24 20-36 36-36s32 12 36 36" fill="#CFFAFE"/></svg>
+          <span class="play-btn"><i data-lucide="play"></i></span>
+        </div>
+        <p>“Exam week used to mean tears. This year, she made her own revision plan.”</p>
+        <strong>Farah S.</strong><span>Parent, Grade 9</span>
+      </article>
+
+      <!-- duplicate set for seamless loop -->
+      <article class="story-testimonial glass-card" aria-hidden="true">
+        <div class="story-testimonial__media">
+          <svg viewBox="0 0 100 100" aria-hidden="true"><circle cx="50" cy="38" r="20" fill="#DBEAFE"/><path d="M14 96c4-24 20-36 36-36s32 12 36 36" fill="#DBEAFE"/></svg>
+          <span class="play-btn"><i data-lucide="play"></i></span>
+        </div>
+        <p>“My son used to forget chapters within a week. Three months into KSCode™, he's teaching his sister the same tricks.”</p>
+        <strong>Anita R.</strong><span>Parent, Grade 6</span>
+      </article>
+      <article class="story-testimonial glass-card" aria-hidden="true">
+        <div class="story-testimonial__media">
+          <svg viewBox="0 0 100 100" aria-hidden="true"><circle cx="50" cy="38" r="20" fill="#DCFCE7"/><path d="M14 96c4-24 20-36 36-36s32 12 36 36" fill="#DCFCE7"/></svg>
+          <span class="play-btn"><i data-lucide="play"></i></span>
+        </div>
+        <p>“I stopped being scared of the whiteboard. Now I put my hand up first.”</p>
+        <strong>Devansh P.</strong><span>Student, Grade 8</span>
+      </article>
+
+    </div>
+  </div>
+</section>
+
+<!-- =========================================================
+     9. FOUNDER SECTION
+========================================================= -->
+<section class="founder" id="founder">
+  <div class="container founder__grid">
+    <div class="founder__portrait">
+      <img src="assets/images/founder.jpg.jpeg" alt="Founder of Sharp Planet" class="founder-illustration">
+        <defs>
+          <linearGradient id="founderGrad" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0" stop-color="#2563EB"/><stop offset="1" stop-color="#071B3A"/>
+          </linearGradient>
+        </defs>
+        <rect x="20" y="20" width="360" height="440" rx="28" fill="url(#founderGrad)"/>
+        <circle cx="200" cy="190" r="70" fill="#F8FAFC" opacity="0.15"/>
+        <path d="M120 400c8-70 40-108 80-108s72 38 80 108" fill="#F8FAFC" opacity="0.15"/>
+        <g opacity="0.5">
+          <circle cx="80" cy="80" r="3" fill="#38BDF8"/>
+          <circle cx="330" cy="100" r="4" fill="#38BDF8"/>
+          <circle cx="70" cy="360" r="3" fill="#38BDF8"/>
+          <circle cx="340" cy="380" r="3" fill="#38BDF8"/>
+        </g>
+      </svg>
+      <div class="founder-badge glass-card">
+        <i data-lucide="award"></i>
+        <div><strong>15+ Years</strong><span>in learning science</span></div>
+      </div>
+    </div>
+
+    <div class="founder__copy">
+      <p class="eyebrow reveal-up"><span class="eyebrow__dot"></span> From the founder</p>
+      <h2 class="section-title section-title--light reveal-up">Built by someone who<br>refused to accept the ceiling.</h2>
+      <p class="section-lead section-lead--light reveal-up">
+        Sharp Planet began with a simple, stubborn question: if two children can
+        sit through the same class and walk away with completely different
+        outcomes, the difference isn't intelligence — it's method. That question
+        became a system, and the system became a mission.
+      </p>
+
+      <div class="founder-timeline reveal-up">
+        <div class="founder-timeline__item">
+          <span class="founder-timeline__year">2011</span>
+          <p>First learning-skills workshop, 40 students.</p>
+        </div>
+        <div class="founder-timeline__item">
+          <span class="founder-timeline__year">2016</span>
+          <p>KSCode™ framework formalised and piloted in 12 schools.</p>
+        </div>
+        <div class="founder-timeline__item">
+          <span class="founder-timeline__year">2021</span>
+          <p>300,000+ minds impacted across India and beyond.</p>
+        </div>
+        <div class="founder-timeline__item">
+          <span class="founder-timeline__year">Now</span>
+          <p>Sharp AI in development — adaptive learning for every child.</p>
+        </div>
+      </div>
+
+      <p class="founder-signature reveal-up">Sharp Planet Founder</p>
+    </div>
+  </div>
+</section>
+
+<!-- =========================================================
+     10. FUTURE VISION — full-screen, animated stars
+========================================================= -->
+<section class="vision" id="vision">
+  <canvas id="starfield" class="vision__stars" aria-hidden="true"></canvas>
+  <div class="vision__glow" aria-hidden="true"></div>
+  <div class="vision__inner">
+    <p class="eyebrow reveal-up"><span class="eyebrow__dot"></span> Where we're headed</p>
+    <h2 class="vision__headline reveal-up">
+      A world where every child<br>graduates knowing <em>how</em> to learn —<br>not just what they were taught.
+    </h2>
+    <p class="vision__sub reveal-up">
+      That's the planet we're building. One future-ready mind at a time.
+    </p>
+  </div>
+</section>
+
+<!-- =========================================================
+     11. FINAL CTA
+========================================================= -->
+<section class="final-cta" id="final-cta">
+  <div class="final-cta__card glass-card reveal-up">
+    <div class="final-cta__glow" aria-hidden="true"></div>
+    <p class="eyebrow"><span class="eyebrow__dot"></span> Start today</p>
+    <h2>Let's find out what your child<br>is really capable of.</h2>
+    <p>A free assessment. No pressure, no sales pitch — just clarity on where they are and what's possible.</p>
+    <a href="#" class="btn btn--primary btn--large magnetic">
+      <span>Book Free Assessment</span>
+      <i data-lucide="arrow-up-right"></i>
+    </a>
+  </div>
+</section>
+
+</main>
+
+<!-- =========================================================
+     12. FOOTER
+========================================================= -->
+<footer class="footer">
+  <div class="container footer__grid">
+    <div class="footer__brand">
+      <a href="#hero" class="navbar__logo">
+        <span class="navbar__logo-mark">
+          <img src="assets/images/logo-icon.png" alt="" width="34" height="34">
+        </span>
+        <span class="navbar__logo-text">Sharp Planet</span>
+      </a>
+      <p>Building Future-Ready Minds.</p>
+      <div class="footer__socials">
+        <a href="#" aria-label="Instagram"><i data-lucide="instagram"></i></a>
+        <a href="#" aria-label="LinkedIn"><i data-lucide="linkedin"></i></a>
+        <a href="#" aria-label="YouTube"><i data-lucide="youtube"></i></a>
+        <a href="#" aria-label="Facebook"><i data-lucide="facebook"></i></a>
+      </div>
+    </div>
+
+    <div class="footer__col">
+      <h4>Quick Links</h4>
+      <a href="#hero">Home</a>
+      <a href="#parent-story">Every Parent's Story</a>
+      <a href="#stories">Stories</a>
+      <a href="#founder">About</a>
+    </div>
+
+    <div class="footer__col">
+      <h4>Programs</h4>
+      <a href="#kscode">KSCode™</a>
+      <a href="#ecosystem">Sharp Parenting</a>
+      <a href="#ecosystem">Sharp AI</a>
+      <a href="#ecosystem">Sharp Planet Academy</a>
+    </div>
+
+    <div class="footer__col">
+      <h4>Contact</h4>
+      <a href="mailto:hello@sharpplanet.com"><i data-lucide="mail"></i> hello@sharpplanet.com</a>
+      <a href="tel:+910000000000"><i data-lucide="phone"></i> +91 00000 00000</a>
+      <a href="#"><i data-lucide="map-pin"></i> Global &amp; on-ground</a>
+    </div>
+  </div>
+
+  <div class="footer__bottom">
+    <p>© <span id="year"></span> Sharp Planet. All rights reserved.</p>
+    <p>Building Future-Ready Minds.</p>
+  </div>
+</footer>
+
+<!-- Scripts -->
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@studio-freight/lenis@1.0.42/dist/lenis.min.js"></script>
+<script src="script.js"></script>
+</body>
+</html>
