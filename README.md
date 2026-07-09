@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # Sharp Planet — Website
 
 A premium, animated marketing site for Sharp Planet, built with plain HTML/CSS/JS,
@@ -66,3 +67,6 @@ npx serve .
   JavaScript (no library), so they stay lightweight.
 - Reduced-motion is respected: if a visitor has "Reduce motion" enabled in
   their OS, animations are minimized automatically.
+=======
+# sharp-planet-website
+>>>>>>> 3f322707098134b512f6c3be30d173a4a90af32a
