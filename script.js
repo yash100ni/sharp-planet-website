@@ -312,7 +312,70 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   /* ------------------------------------------------------------
-     9. FOOTER YEAR
+     9. SHARED LIGHTBOX — Featured In / Moments of Impact / Media Gallery
+  ------------------------------------------------------------ */
+  const lightbox = document.getElementById("lightbox");
+  if (lightbox) {
+    const lbImg = document.getElementById("lightboxImg");
+    const lbCaption = document.getElementById("lightboxCaption");
+    const lbClose = document.getElementById("lightboxClose");
+    const lbPrev = document.getElementById("lightboxPrev");
+    const lbNext = document.getElementById("lightboxNext");
+
+    const groups = {};
+    let currentGroup = null;
+    let currentIndex = 0;
+
+    function showLightbox() {
+      const item = groups[currentGroup][currentIndex];
+      lbImg.src = item.src;
+      lbImg.alt = item.caption;
+      lbCaption.textContent = item.caption;
+      lightbox.classList.add("is-open");
+      document.body.style.overflow = "hidden";
+    }
+    function closeLightbox() {
+      lightbox.classList.remove("is-open");
+      document.body.style.overflow = "";
+    }
+    function nextImage() {
+      const arr = groups[currentGroup];
+      currentIndex = (currentIndex + 1) % arr.length;
+      showLightbox();
+    }
+    function prevImage() {
+      const arr = groups[currentGroup];
+      currentIndex = (currentIndex - 1 + arr.length) % arr.length;
+      showLightbox();
+    }
+
+    document.querySelectorAll("[data-lightbox-group]").forEach((el) => {
+      const group = el.dataset.lightboxGroup;
+      if (!groups[group]) groups[group] = [];
+      const index = groups[group].length;
+      groups[group].push({ src: el.dataset.lightboxSrc, caption: el.dataset.caption || "" });
+      el.addEventListener("click", (e) => {
+        e.preventDefault();
+        currentGroup = group;
+        currentIndex = index;
+        showLightbox();
+      });
+    });
+
+    lbClose.addEventListener("click", closeLightbox);
+    lbNext.addEventListener("click", nextImage);
+    lbPrev.addEventListener("click", prevImage);
+    lightbox.addEventListener("click", (e) => { if (e.target === lightbox) closeLightbox(); });
+    document.addEventListener("keydown", (e) => {
+      if (!lightbox.classList.contains("is-open")) return;
+      if (e.key === "Escape") closeLightbox();
+      if (e.key === "ArrowRight") nextImage();
+      if (e.key === "ArrowLeft") prevImage();
+    });
+  }
+
+  /* ------------------------------------------------------------
+     10. FOOTER YEAR
   ------------------------------------------------------------ */
   const yearEl = document.getElementById("year");
   if (yearEl) yearEl.textContent = new Date().getFullYear();
