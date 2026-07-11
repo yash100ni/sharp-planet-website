@@ -391,24 +391,6 @@ document.addEventListener("DOMContentLoaded", () => {
       });
     });
 
-      // ---------------------------------------------------------------
-      // SUBMIT TO BACKEND — replace this simulated delay with a real call,
-      // e.g.:
-      //
-      // fetch("https://YOUR-SYSTEME-IO-OR-API-ENDPOINT", {
-      //   method: "POST",
-      //   headers: { "Content-Type": "application/json" },
-      //   body: JSON.stringify(payload),
-      // })
-      //   .then(() => showAssessmentSuccess())
-      //   .catch(() => { /* show an inline error state here */ });
-      // ---------------------------------------------------------------
-      setTimeout(() => {
-        console.log("Assessment form payload (wire this up to your backend):", payload);
-        showAssessmentSuccess();
-      }, 900);
-    });
-
     function showAssessmentSuccess() {
       amSubmit.classList.remove("is-loading");
       amSubmit.disabled = false;
