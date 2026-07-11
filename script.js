@@ -188,6 +188,243 @@ document.addEventListener("DOMContentLoaded", () => {
   document.addEventListener("keydown", (e) => { if (e.key === "Escape") closeModal(); });
 
   /* ------------------------------------------------------------
+     6b. BOOK FREE ASSESSMENT MODAL
+     Any element with class "js-book-assessment" opens this modal
+     instead of navigating anywhere. Frontend-only for now — see the
+     "SUBMIT TO BACKEND" marker below for where to POST to Systeme.io
+     or any other API once one is ready.
+  ------------------------------------------------------------ */
+  (function initAssessmentModal() {
+    const amOverlay = document.getElementById("amOverlay");
+    if (!amOverlay) return;
+
+    const amModal = document.getElementById("amModal");
+    const amClose = document.getElementById("amClose");
+    const amForm = document.getElementById("amForm");
+    const amFormView = document.getElementById("amFormView");
+    const amSuccessView = document.getElementById("amSuccessView");
+    const amSuccessClose = document.getElementById("amSuccessClose");
+    const amSubmit = document.getElementById("amSubmit");
+
+    let lastFocusedEl = null;
+
+    function openAssessmentModal() {
+      lastFocusedEl = document.activeElement;
+      amOverlay.classList.add("is-open");
+      amOverlay.setAttribute("aria-hidden", "false");
+      document.body.style.overflow = "hidden";
+      const firstField = document.getElementById("amName");
+      if (firstField) setTimeout(() => firstField.focus(), 350);
+    }
+
+    function resetAssessmentModal() {
+      amForm.reset();
+      amForm.querySelectorAll(".am-field.is-invalid").forEach((f) => f.classList.remove("is-invalid"));
+      amForm.querySelectorAll(".am-error").forEach((e) => (e.textContent = ""));
+      amSubmit.classList.remove("is-loading");
+      amSubmit.disabled = false;
+      amFormView.hidden = false;
+      amSuccessView.hidden = true;
+    }
+
+    function closeAssessmentModal() {
+      amOverlay.classList.remove("is-open");
+      amOverlay.setAttribute("aria-hidden", "true");
+      document.body.style.overflow = "";
+      if (lastFocusedEl) lastFocusedEl.focus();
+      // Reset after the close transition finishes so it doesn't flash mid-close.
+      setTimeout(resetAssessmentModal, 400);
+    }
+
+    // Open triggers — any button/link across the site with this class.
+    document.querySelectorAll(".js-book-assessment").forEach((trigger) => {
+      trigger.addEventListener("click", (e) => {
+        e.preventDefault();
+        openAssessmentModal();
+      });
+    });
+
+    amClose.addEventListener("click", closeAssessmentModal);
+    amSuccessClose.addEventListener("click", closeAssessmentModal);
+    amOverlay.addEventListener("click", (e) => { if (e.target === amOverlay) closeAssessmentModal(); });
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "Escape" && amOverlay.classList.contains("is-open")) closeAssessmentModal();
+    });
+
+    // Basic focus trap while the modal is open.
+    amModal.addEventListener("keydown", (e) => {
+      if (e.key !== "Tab") return;
+      const focusable = amModal.querySelectorAll(
+        'input, select, textarea, button, [href]'
+      );
+      if (!focusable.length) return;
+      const first = focusable[0];
+      const last = focusable[focusable.length - 1];
+      if (e.shiftKey && document.activeElement === first) {
+        e.preventDefault();
+        last.focus();
+      } else if (!e.shiftKey && document.activeElement === last) {
+        e.preventDefault();
+        first.focus();
+      }
+    });
+
+    /* ---------------- validation ---------------- */
+    function setFieldError(fieldEl, errorEl, message) {
+      fieldEl.classList.add("is-invalid");
+      if (errorEl) errorEl.textContent = message;
+    }
+    function clearFieldError(fieldEl, errorEl) {
+      fieldEl.classList.remove("is-invalid");
+      if (errorEl) errorEl.textContent = "";
+    }
+    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+    function validateAssessmentForm() {
+      let isValid = true;
+
+      const checks = [
+        { input: "amName", error: "amNameError", test: (v) => v.trim().length > 1, msg: "Please enter your full name." },
+        { input: "amEmail", error: "amEmailError", test: (v) => emailPattern.test(v.trim()), msg: "Please enter a valid email address." },
+        { input: "amPhone", error: "amPhoneError", test: (v) => v.replace(/\D/g, "").length >= 7, msg: "Please enter a valid phone number." },
+        { input: "amCompany", error: "amCompanyError", test: (v) => v.trim().length > 1, msg: "Please enter your company or brand name." },
+        { input: "amIndustry", error: "amIndustryError", test: (v) => v.trim().length > 0, msg: "Please select your industry." },
+        { input: "amBudget", error: "amBudgetError", test: (v) => v.trim().length > 0, msg: "Please select a budget range." },
+      ];
+
+      checks.forEach(({ input, error, test, msg }) => {
+        const inputEl = document.getElementById(input);
+        const errorEl = document.getElementById(error);
+        const fieldEl = inputEl.closest(".am-field");
+        if (!test(inputEl.value)) {
+          setFieldError(fieldEl, errorEl, msg);
+          isValid = false;
+        } else {
+          clearFieldError(fieldEl, errorEl);
+        }
+      });
+
+      // Services — at least one checkbox required.
+      const servicesField = document.getElementById("amServices").closest(".am-field");
+      const servicesError = document.getElementById("amServicesError");
+      const anyServiceChecked = amForm.querySelectorAll('input[name="services"]:checked').length > 0;
+      if (!anyServiceChecked) {
+        setFieldError(servicesField, servicesError, "Please select at least one service.");
+        isValid = false;
+      } else {
+        clearFieldError(servicesField, servicesError);
+      }
+
+      // Consent — required.
+      const consentInput = document.getElementById("amConsent");
+      const consentField = consentInput.closest(".am-field");
+      const consentError = document.getElementById("amConsentError");
+      if (!consentInput.checked) {
+        setFieldError(consentField, consentError, "Please confirm you agree to be contacted.");
+        isValid = false;
+      } else {
+        clearFieldError(consentField, consentError);
+      }
+
+      return isValid;
+    }
+
+    // Clear a field's error state as soon as the person starts fixing it.
+    amForm.querySelectorAll("input, select, textarea").forEach((el) => {
+      el.addEventListener("input", () => {
+        const fieldEl = el.closest(".am-field");
+        if (fieldEl) clearFieldError(fieldEl, fieldEl.querySelector(".am-error"));
+      });
+      el.addEventListener("change", () => {
+        const fieldEl = el.closest(".am-field");
+        if (fieldEl) clearFieldError(fieldEl, fieldEl.querySelector(".am-error"));
+      });
+    });
+
+    /* ---------------- submit ---------------- */
+    amForm.addEventListener("submit", (e) => {
+      e.preventDefault();
+      if (!validateAssessmentForm()) {
+        const firstInvalid = amForm.querySelector(".am-field.is-invalid input, .am-field.is-invalid select, .am-field.is-invalid textarea");
+        if (firstInvalid) firstInvalid.focus();
+        return;
+      }
+
+      amSubmit.classList.add("is-loading");
+      amSubmit.disabled = true;
+
+      const formData = new FormData(amForm);
+      const payload = {
+        fullName: formData.get("fullName"),
+        workEmail: formData.get("workEmail"),
+        phone: `${formData.get("countryCode")} ${formData.get("phone")}`,
+        problem: formData.get("problem"),
+        contactMethod: formData.get("contactMethod"),
+        consent: true,
+      };
+
+      const formErrorEl = document.getElementById("amFormError");
+      formErrorEl.hidden = true;
+
+      if (!navigator.onLine) {
+        formErrorEl.hidden = false;
+        amSubmit.classList.remove("is-loading");
+        amSubmit.disabled = false;
+        return;
+      }
+
+      // ---------------------------------------------------------------
+      // SUBMIT DIRECTLY TO SYSTEME.IO — no backend needed. This is
+      // Systeme's own public opt-in form endpoint (safe to call straight
+      // from the browser — unlike the private api.systeme.io REST API,
+      // this one is designed for exactly this).
+      //
+      // Confirmed fields: email, first_name, phone_number.
+      // Best-effort fields: current_problem, preferred_contact_method —
+      // these only actually save if you've added matching fields to the
+      // Inline Form in Systeme.io. See "buildSystemeFields" above and the
+      // README for how to confirm/expand this.
+      // ---------------------------------------------------------------
+      const systemeFields = buildSystemeFields(payload);
+      submitToSysteme(systemeFields).then(() => {
+        showAssessmentSuccess();
+      });
+    });
+
+      // ---------------------------------------------------------------
+      // SUBMIT TO BACKEND — replace this simulated delay with a real call,
+      // e.g.:
+      //
+      // fetch("https://YOUR-SYSTEME-IO-OR-API-ENDPOINT", {
+      //   method: "POST",
+      //   headers: { "Content-Type": "application/json" },
+      //   body: JSON.stringify(payload),
+      // })
+      //   .then(() => showAssessmentSuccess())
+      //   .catch(() => { /* show an inline error state here */ });
+      // ---------------------------------------------------------------
+      setTimeout(() => {
+        console.log("Assessment form payload (wire this up to your backend):", payload);
+        showAssessmentSuccess();
+      }, 900);
+    });
+
+    function showAssessmentSuccess() {
+      amSubmit.classList.remove("is-loading");
+      amSubmit.disabled = false;
+      amFormView.hidden = true;
+      amSuccessView.hidden = false;
+      // Restart the SVG draw-in animations every time success is shown.
+      const ring = amSuccessView.querySelector(".am-success__ring");
+      const check = amSuccessView.querySelector(".am-success__check");
+      [ring, check].forEach((el) => {
+        el.style.animation = "none";
+        void el.offsetWidth; // force reflow
+        el.style.animation = "";
+      });
+    }
+  })();
+  /* ------------------------------------------------------------
      7. HERO — NEURAL CONSTELLATION (signature element)
      A field of nodes that drift slowly and connect to nearby
      nodes and to the cursor, symbolising synapses forming.

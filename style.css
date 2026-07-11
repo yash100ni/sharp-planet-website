@@ -761,3 +761,172 @@ em{ font-style:normal; background:var(--grad-text); -webkit-background-clip:text
   .lightbox__nav--prev{ left:10px; }
   .lightbox__nav--next{ right:10px; }
 }
+/* ==========================================================================
+   BOOK FREE ASSESSMENT MODAL
+   Namespaced with "am-" (assessment modal) to avoid collisions with the
+   existing .modal (ecosystem) component.
+   ========================================================================== */
+
+.am-overlay{
+  position: fixed; inset:0; z-index: 4000;
+  display:flex; align-items:center; justify-content:center;
+  padding: 24px;
+  background: rgba(4,10,24,0.72);
+  backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
+  opacity:0; pointer-events:none;
+  transition: opacity .4s var(--ease);
+}
+.am-overlay.is-open{ opacity:1; pointer-events:all; }
+
+.am-modal{
+  position:relative; width:100%; max-width: 640px; max-height: min(88vh, 860px);
+  overflow-y:auto; -webkit-overflow-scrolling:touch;
+  background: linear-gradient(180deg, rgba(15,32,64,0.92), rgba(7,17,38,0.96));
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 24px;
+  box-shadow: 0 40px 120px -20px rgba(0,0,0,0.65), 0 0 80px -20px rgba(56,189,248,0.25);
+  padding: clamp(28px, 4vw, 48px);
+  transform: translateY(28px) scale(0.97);
+  opacity:0;
+  transition: transform .45s var(--ease), opacity .45s var(--ease);
+}
+.am-overlay.is-open .am-modal{ transform: translateY(0) scale(1); opacity:1; }
+
+.am-modal::-webkit-scrollbar{ width:8px; }
+.am-modal::-webkit-scrollbar-thumb{ background: rgba(255,255,255,0.14); border-radius:10px; }
+
+.am-close{
+  position:absolute; top:20px; right:20px; z-index:2;
+  width:40px; height:40px; border-radius:50%;
+  background: rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.12);
+  display:flex; align-items:center; justify-content:center; color:#fff;
+  transition: background .3s, transform .3s;
+}
+.am-close:hover{ background: rgba(255,255,255,0.16); transform: rotate(90deg); }
+.am-close i{ width:18px; height:18px; }
+
+/* ---------- form head ---------- */
+.am-head{ margin-bottom:28px; padding-right:40px; }
+.am-head .eyebrow{ color: var(--cyan); }
+.am-head h2{ color:#fff; font-size: clamp(24px, 3vw, 30px); margin: 10px 0 8px; }
+.am-head p{ color: rgba(255,255,255,0.6); font-size:14.5px; }
+
+/* ---------- form fields ---------- */
+.am-form{ display:flex; flex-direction:column; gap:20px; }
+.am-field{ display:flex; flex-direction:column; gap:8px; }
+.am-field label{ font-size:13px; font-weight:700; color: rgba(255,255,255,0.85); letter-spacing:0.01em; }
+.am-field label em{ font-style:normal; font-weight:500; color: rgba(255,255,255,0.4); }
+
+.am-field input[type="text"],
+.am-field input[type="email"],
+.am-field input[type="tel"],
+.am-field select,
+.am-field textarea{
+  width:100%; font-family: var(--font-body); font-size:14.5px; color:#fff;
+  background: rgba(255,255,255,0.05);
+  border: 1.5px solid rgba(255,255,255,0.12);
+  border-radius: 14px;
+  padding: 13px 16px;
+  transition: border-color .3s, background .3s, box-shadow .3s;
+}
+.am-field textarea{ resize: vertical; min-height:90px; font-family: var(--font-body); }
+.am-field input::placeholder, .am-field textarea::placeholder{ color: rgba(255,255,255,0.35); }
+.am-field input:focus, .am-field select:focus, .am-field textarea:focus{
+  outline:none; border-color: var(--cyan); background: rgba(255,255,255,0.08);
+  box-shadow: 0 0 0 4px rgba(56,189,248,0.14);
+}
+.am-field select{ appearance:none; -webkit-appearance:none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%2394A3B8' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+  background-repeat:no-repeat; background-position: right 14px center; padding-right:40px;
+}
+.am-field select option{ background: #0A2550; color:#fff; }
+
+.am-phone-row{ display:flex; gap:10px; }
+.am-phone-row select{ flex: 0 0 108px; padding-left:12px; padding-right:32px; }
+.am-phone-row input{ flex:1; }
+
+.am-error{
+  font-size:12px; font-weight:600; color:#FCA5A5; min-height:0;
+  display:none;
+}
+.am-field.is-invalid input,
+.am-field.is-invalid select,
+.am-field.is-invalid textarea{ border-color:#F87171; box-shadow: 0 0 0 4px rgba(248,113,113,0.12); }
+.am-field.is-invalid .am-error{ display:block; }
+
+/* ---------- chips (services + contact method) ---------- */
+.am-chips{ display:flex; flex-wrap:wrap; gap:10px; }
+.am-chip{ position:relative; cursor:pointer; }
+.am-chip input{ position:absolute; opacity:0; width:0; height:0; }
+.am-chip span{
+  display:flex; align-items:center; gap:6px;
+  padding:10px 16px; border-radius: var(--radius-full);
+  background: rgba(255,255,255,0.05); border:1.5px solid rgba(255,255,255,0.14);
+  color: rgba(255,255,255,0.75); font-size:13.5px; font-weight:600;
+  transition: all .3s var(--ease);
+}
+.am-chip span i{ width:14px; height:14px; }
+.am-chip input:checked + span{
+  background: var(--grad-primary); border-color: transparent; color:#fff;
+  box-shadow: 0 8px 20px -6px rgba(37,99,235,0.55);
+}
+.am-chip input:focus-visible + span{ outline:2px solid var(--cyan); outline-offset:2px; }
+.am-chip:hover span{ border-color: rgba(56,189,248,0.5); }
+
+/* ---------- consent ---------- */
+.am-consent{ display:flex; align-items:flex-start; gap:12px; cursor:pointer; }
+.am-consent input{ position:absolute; opacity:0; width:0; height:0; }
+.am-consent__box{
+  flex-shrink:0; width:22px; height:22px; border-radius:7px; margin-top:1px;
+  border:1.5px solid rgba(255,255,255,0.3); background: rgba(255,255,255,0.05);
+  display:flex; align-items:center; justify-content:center;
+  transition: all .25s var(--ease);
+}
+.am-consent__box i{ width:14px; height:14px; color:#fff; opacity:0; transform: scale(0.5); transition: all .2s var(--ease); }
+.am-consent input:checked + .am-consent__box{ background: var(--grad-primary); border-color: transparent; }
+.am-consent input:checked + .am-consent__box i{ opacity:1; transform: scale(1); }
+.am-consent input:focus-visible + .am-consent__box{ outline:2px solid var(--cyan); outline-offset:2px; }
+.am-consent__text{ font-size:13.5px; color: rgba(255,255,255,0.75); line-height:1.5; }
+.am-field--consent .am-error{ margin-left:34px; }
+
+/* ---------- submit button ---------- */
+.am-submit{
+  width:100%; justify-content:center; margin-top:6px; position:relative;
+}
+.am-submit__spinner{
+  display:none; width:16px; height:16px; border-radius:50%;
+  border:2px solid rgba(255,255,255,0.4); border-top-color:#fff;
+  animation: amSpin .7s linear infinite;
+}
+.am-submit.is-loading .am-submit__label{ opacity:0.6; }
+.am-submit.is-loading .am-submit__spinner{ display:inline-block; }
+@keyframes amSpin{ to{ transform: rotate(360deg); } }
+
+/* ---------- success view ---------- */
+.am-view--success{ display:flex; align-items:center; justify-content:center; min-height:380px; }
+.am-success{ text-align:center; padding: 20px 10px; }
+.am-success__icon{ display:inline-flex; margin-bottom:22px; }
+.am-success__ring{ stroke: rgba(16,185,129,0.25); }
+.am-success__check{
+  stroke: var(--emerald);
+  stroke-dasharray: 48; stroke-dashoffset:48;
+  animation: amCheckDraw .5s .35s var(--ease) forwards;
+}
+.am-success__ring{
+  stroke-dasharray: 226; stroke-dashoffset:226;
+  animation: amRingDraw .6s var(--ease) forwards;
+}
+@keyframes amRingDraw{ to{ stroke-dashoffset:0; } }
+@keyframes amCheckDraw{ to{ stroke-dashoffset:0; } }
+.am-success h2{ color:#fff; font-size:26px; margin-bottom:10px; }
+.am-success p{ color: rgba(255,255,255,0.65); font-size:15px; margin-bottom:28px; }
+.am-success__close{ background: rgba(255,255,255,0.08); color:#fff; border-color: rgba(255,255,255,0.2); }
+.am-success__close:hover{ background: rgba(255,255,255,0.16); }
+
+/* ---------- responsive ---------- */
+@media (max-width: 640px){
+  .am-overlay{ padding:0; }
+  .am-modal{ max-width:100%; max-height:100dvh; height:100dvh; border-radius:0; }
+  .am-phone-row{ flex-direction:column; }
+  .am-phone-row select{ flex: 0 0 auto; width:100%; }
+}

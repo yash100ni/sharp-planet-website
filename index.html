@@ -43,7 +43,7 @@
       <a href="#final-cta" class="navbar__link">Contact</a>
     </nav>
 
-    <a href="#final-cta" class="btn btn--primary btn--small navbar__cta">
+    <a href="#" class="btn btn--primary btn--small navbar__cta js-book-assessment">
       <span>Book Assessment</span>
     </a>
 
@@ -57,7 +57,7 @@
     <a href="#stories" class="navbar__mobile-link">Stories</a>
     <a href="#founder" class="navbar__mobile-link">About</a>
     <a href="#final-cta" class="navbar__mobile-link">Contact</a>
-    <a href="#final-cta" class="btn btn--primary">Book Assessment</a>
+    <a href="#" class="btn btn--primary js-book-assessment">Book Assessment</a>
   </div>
 </header>
 
@@ -93,7 +93,7 @@
     </p>
 
     <div class="hero__actions reveal-up">
-      <a href="#final-cta" class="btn btn--primary btn--large magnetic">
+      <a href="#" class="btn btn--primary btn--large magnetic js-book-assessment">
         <span>Book Free Assessment</span>
         <i data-lucide="arrow-up-right"></i>
       </a>
@@ -816,6 +816,211 @@
   </div>
 </section>
 
+<!-- =========================================================
+     BOOK FREE ASSESSMENT — premium modal
+     Triggered by any element with class "js-book-assessment".
+     Frontend only — see script.js "ASSESSMENT MODAL" section for
+     where to wire up Systeme.io / a backend API on submit.
+========================================================= -->
+<div class="am-overlay" id="amOverlay" aria-hidden="true">
+  <div class="am-modal" id="amModal" role="dialog" aria-modal="true" aria-labelledby="amTitle">
+
+    <button class="am-close" id="amClose" aria-label="Close">
+      <i data-lucide="x"></i>
+    </button>
+
+    <!-- ---------- FORM VIEW ---------- -->
+    <div class="am-view am-view--form" id="amFormView">
+      <div class="am-head">
+        <span class="eyebrow"><span class="eyebrow__dot"></span> Free Assessment</span>
+        <h2 id="amTitle">Let's map out your next step.</h2>
+        <p>Tell us a little about you — takes under a minute. No pressure, no spam.</p>
+      </div>
+
+      <form class="am-form" id="amForm" novalidate >
+
+        <!-- Full Name -->
+        <div class="am-field">
+          <label for="amName">Full Name</label>
+          <input type="text" id="amName" name="fullName" autocomplete="name" placeholder="Your full name" required>
+          <span class="am-error" id="amNameError"></span>
+        </div>
+
+        <!-- Work Email -->
+        <div class="am-field">
+          <label for="amEmail">Work Email</label>
+          <input type="email" id="amEmail" name="workEmail" autocomplete="email" placeholder="you@company.com" required>
+          <span class="am-error" id="amEmailError"></span>
+        </div>
+
+        <!-- Phone Number with country code -->
+        <div class="am-field">
+          <label for="amPhone">Phone Number</label>
+          <div class="am-phone-row">
+            <select id="amCountryCode" name="countryCode" aria-label="Country code">
+              <option value="+91" selected>🇮🇳 +91</option>
+              <option value="+1">🇺🇸 +1</option>
+              <option value="+44">🇬🇧 +44</option>
+              <option value="+61">🇦🇺 +61</option>
+              <option value="+971">🇦🇪 +971</option>
+              <option value="+65">🇸🇬 +65</option>
+              <option value="+49">🇩🇪 +49</option>
+              <option value="+33">🇫🇷 +33</option>
+              <option value="+81">🇯🇵 +81</option>
+              <option value="+86">🇨🇳 +86</option>
+            </select>
+            <input type="tel" id="amPhone" name="phone" autocomplete="tel" placeholder="98765 43210" required>
+          </div>
+          <span class="am-error" id="amPhoneError"></span>
+        </div>
+
+        <!-- Company / Brand Name -->
+        <div class="am-field">
+          <label for="amCompany">Current problem facing</label>
+          <input type="text" id="amCompany" name="company" autocomplete="organization" placeholder="type here" required>
+          <span class="am-error" id="amCompanyError"></span>
+        </div>
+
+        <!-- Website / Social link (optional) -->
+        <!-- <div class="am-field">
+          <label for="amWebsite">Website or Social Media Link <em>(optional)</em></label>
+          <input type="text" id="amWebsite" name="website" autocomplete="url" placeholder="https://... or @handle">
+        </div> -->
+
+        <!-- Industry / Business Type -->
+        <!-- <div class="am-field">
+          <label for="amIndustry">Industry / Business Type</label>
+          <select id="amIndustry" name="industry" required>
+            <option value="" disabled selected>Select your industry</option>
+            <option>Education</option>
+            <option>Retail &amp; E-commerce</option>
+            <option>Real Estate</option>
+            <option>Healthcare</option>
+            <option>Hospitality &amp; Travel</option>
+            <option>Technology &amp; SaaS</option>
+            <option>Finance &amp; Insurance</option>
+            <option>Manufacturing</option>
+            <option>Professional Services</option>
+            <option>Other</option>
+          </select>
+          <span class="am-error" id="amIndustryError"></span>
+        </div> -->
+
+        <!-- Services Interested In (multi-select) -->
+        <!-- <div class="am-field">
+          <label>Services Interested In</label>
+          <div class="am-chips" id="amServices" role="group" aria-label="Services interested in">
+            <label class="am-chip">
+              <input type="checkbox" name="services" value="Website Development">
+              <span>Website Development</span>
+            </label>
+            <label class="am-chip">
+              <input type="checkbox" name="services" value="Branding">
+              <span>Branding</span>
+            </label>
+            <label class="am-chip">
+              <input type="checkbox" name="services" value="Digital Marketing">
+              <span>Digital Marketing</span>
+            </label>
+            <label class="am-chip">
+              <input type="checkbox" name="services" value="SEO">
+              <span>SEO</span>
+            </label>
+            <label class="am-chip">
+              <input type="checkbox" name="services" value="AI Automation">
+              <span>AI Automation</span>
+            </label>
+            <label class="am-chip">
+              <input type="checkbox" name="services" value="Social Media Management">
+              <span>Social Media Management</span>
+            </label>
+            <label class="am-chip">
+              <input type="checkbox" name="services" value="Other">
+              <span>Other</span>
+            </label>
+          </div>
+          <span class="am-error" id="amServicesError"></span>
+        </div> -->
+
+        <!-- Monthly Marketing Budget -->
+        <!-- <div class="am-field">
+          <label for="amBudget">Monthly Marketing Budget</label>
+          <select id="amBudget" name="budget" required>
+            <option value="" disabled selected>Select a range</option>
+            <option>Under ₹25,000</option>
+            <option>₹25,000 – ₹50,000</option>
+            <option>₹50,000 – ₹1,00,000</option>
+            <option>₹1,00,000 – ₹3,00,000</option>
+            <option>₹3,00,000+</option>
+            <option>Not sure yet</option>
+          </select>
+          <span class="am-error" id="amBudgetError"></span>
+        </div> -->
+
+        <!-- Business goals / challenges -->
+        <!-- <div class="am-field">
+          <label for="amMessage">Briefly describe your business goals or challenges</label>
+          <textarea id="amMessage" name="message" rows="4" placeholder="Tell us what you're trying to achieve..."></textarea>
+        </div> -->
+
+        <!-- Preferred Contact Method -->
+        <div class="am-field">
+          <label>Preferred Contact Method</label>
+          <div class="am-chips am-chips--radio" id="amContactMethod" role="radiogroup" aria-label="Preferred contact method">
+            <label class="am-chip">
+              <input type="radio" name="contactMethod" value="Phone" checked>
+              <span><i data-lucide="phone"></i> Phone</span>
+            </label>
+            <label class="am-chip">
+              <input type="radio" name="contactMethod" value="WhatsApp">
+              <span><i data-lucide="message-circle"></i> WhatsApp</span>
+            </label>
+            <label class="am-chip">
+              <input type="radio" name="contactMethod" value="Email">
+              <span><i data-lucide="mail"></i> Email</span>
+            </label>
+          </div>
+        </div>
+
+        <!-- Consent -->
+        <div class="am-field am-field--consent">
+          <label class="am-consent">
+            <input type="checkbox" id="amConsent" name="consent" required>
+            <span class="am-consent__box"><i data-lucide="check"></i></span>
+            <span class="am-consent__text">I agree to be contacted by Sharp Planet.</span>
+          </label>
+          <span class="am-error" id="amConsentError"></span>
+        </div>
+
+        <button type="submit" class="btn btn--primary btn--large am-submit" id="amSubmit">
+          <span class="am-submit__label">Book My Free Assessment</span>
+          <span class="am-submit__spinner" aria-hidden="true"></span>
+        </button>
+      </form>
+    </div>
+
+    <!-- ---------- SUCCESS VIEW ---------- -->
+    <div class="am-view am-view--success" id="amSuccessView" hidden>
+      <div class="am-success">
+        <span class="am-success__icon">
+          <svg viewBox="0 0 80 80" width="80" height="80" aria-hidden="true">
+            <circle class="am-success__ring" cx="40" cy="40" r="36" fill="none" stroke-width="4"/>
+            <path class="am-success__check" d="M24 41 L35 52 L57 28" fill="none" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </span>
+        <h2>Thank you!</h2>
+        <p>Our team will contact you within 24 hours.</p>
+        <button type="button" class="btn btn--ghost am-success__close" id="amSuccessClose">Close</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- =========================================================
+     Shared lightbox for Featured In / Moments of Impact / Media Gallery
+========================================================= -->
+
 <!-- Shared lightbox for Featured In / Moments of Impact / Media Gallery -->
 <div class="lightbox" id="lightbox">
   <button class="lightbox__close" id="lightboxClose" aria-label="Close"><i data-lucide="x"></i></button>
@@ -913,7 +1118,7 @@
     <p class="eyebrow"><span class="eyebrow__dot"></span> Start today</p>
     <h2>Let's find out what your child<br>is really capable of.</h2>
     <p>A free assessment. No pressure, no sales pitch — just clarity on where they are and what's possible.</p>
-    <a href="#" class="btn btn--primary btn--large magnetic">
+    <a href="#" class="btn btn--primary btn--large magnetic js-book-assessment">
       <span>Book Free Assessment</span>
       <i data-lucide="arrow-up-right"></i>
     </a>
