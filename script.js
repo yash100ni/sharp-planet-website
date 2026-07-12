@@ -302,16 +302,7 @@ document.addEventListener("DOMContentLoaded", () => {
         }
       });
 
-      // Services — at least one checkbox required.
-      const servicesField = document.getElementById("amServices").closest(".am-field");
-      const servicesError = document.getElementById("amServicesError");
-      const anyServiceChecked = amForm.querySelectorAll('input[name="services"]:checked').length > 0;
-      if (!anyServiceChecked) {
-        setFieldError(servicesField, servicesError, "Please select at least one service.");
-        isValid = false;
-      } else {
-        clearFieldError(servicesField, servicesError);
-      }
+      
 
       // Consent — required.
       const consentInput = document.getElementById("amConsent");
