@@ -302,8 +302,6 @@ document.addEventListener("DOMContentLoaded", () => {
         }
       });
 
-      
-
       // Consent — required.
       const consentInput = document.getElementById("amConsent");
       const consentField = consentInput.closest(".am-field");
@@ -347,7 +345,7 @@ document.addEventListener("DOMContentLoaded", () => {
         fullName: formData.get("fullName"),
         workEmail: formData.get("workEmail"),
         phone: `${formData.get("countryCode")} ${formData.get("phone")}`,
-        problem: formData.get("problem"),
+        problem: formData.get("What challenge are you currently facing?"),
         contactMethod: formData.get("contactMethod"),
         consent: true,
       };
