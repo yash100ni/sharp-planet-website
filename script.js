@@ -287,7 +287,7 @@ document.addEventListener("DOMContentLoaded", () => {
         { input: "amName", error: "amNameError", test: (v) => v.trim().length > 1, msg: "Please enter your full name." },
         { input: "amEmail", error: "amEmailError", test: (v) => emailPattern.test(v.trim()), msg: "Please enter a valid email address." },
         { input: "amPhone", error: "amPhoneError", test: (v) => v.replace(/\D/g, "").length >= 7, msg: "Please enter a valid phone number." },
-        { input: "amProblem", error: "amProblemError", test: (v) => v.trim().length > 1, msg: "Please enter your company or brand name." },
+        { input: "amProblem", error: "amProblemError", test: (v) => v.trim().length > 1, msg: "Please describe the challenge you're currently facing." },
       ];
 
       checks.forEach(({ input, error, test, msg }) => {
@@ -345,7 +345,7 @@ document.addEventListener("DOMContentLoaded", () => {
         fullName: formData.get("fullName"),
         workEmail: formData.get("workEmail"),
         phone: `${formData.get("countryCode")} ${formData.get("phone")}`,
-        problem: formData.get("What challenge are you currently facing?"),
+        problem: formData.get("current_problem"),
         contactMethod: formData.get("contactMethod"),
         consent: true,
       };
