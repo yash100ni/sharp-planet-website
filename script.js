@@ -288,8 +288,6 @@ document.addEventListener("DOMContentLoaded", () => {
         { input: "amEmail", error: "amEmailError", test: (v) => emailPattern.test(v.trim()), msg: "Please enter a valid email address." },
         { input: "amPhone", error: "amPhoneError", test: (v) => v.replace(/\D/g, "").length >= 7, msg: "Please enter a valid phone number." },
         { input: "amProblem", error: "amProblemError", test: (v) => v.trim().length > 1, msg: "Please enter your company or brand name." },
-        { input: "amIndustry", error: "amIndustryError", test: (v) => v.trim().length > 0, msg: "Please select your industry." },
-        { input: "amBudget", error: "amBudgetError", test: (v) => v.trim().length > 0, msg: "Please select a budget range." },
       ];
 
       checks.forEach(({ input, error, test, msg }) => {
