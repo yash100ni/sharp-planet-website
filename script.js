@@ -349,8 +349,8 @@ document.addEventListener("DOMContentLoaded", () => {
     // Systeme.io (see the README for how to expand this).
     function buildSystemeFields(payload) {
       return {
-        email: payload.workEmail,
         first_name: payload.fullName,
+        email: payload.workEmail,
         phone_number: payload.phone,
         // best-effort extra — safe to send even if Systeme ignores it until
         // you add a matching field to the Inline Form (see README)
