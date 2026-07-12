@@ -221,6 +221,8 @@ document.addEventListener("DOMContentLoaded", () => {
       amForm.reset();
       amForm.querySelectorAll(".am-field.is-invalid").forEach((f) => f.classList.remove("is-invalid"));
       amForm.querySelectorAll(".am-error").forEach((e) => (e.textContent = ""));
+      const formErrorEl = document.getElementById("amFormError");
+      if (formErrorEl) formErrorEl.hidden = true;
       amSubmit.classList.remove("is-loading");
       amSubmit.disabled = false;
       amFormView.hidden = false;
@@ -287,12 +289,16 @@ document.addEventListener("DOMContentLoaded", () => {
         { input: "amName", error: "amNameError", test: (v) => v.trim().length > 1, msg: "Please enter your full name." },
         { input: "amEmail", error: "amEmailError", test: (v) => emailPattern.test(v.trim()), msg: "Please enter a valid email address." },
         { input: "amPhone", error: "amPhoneError", test: (v) => v.replace(/\D/g, "").length >= 7, msg: "Please enter a valid phone number." },
-        { input: "amProblem", error: "amProblemError", test: (v) => v.trim().length > 1, msg: "Please describe the challenge you're currently facing." },
+        { input: "amProblem", error: "amProblemError", test: (v) => v.trim().length > 1, msg: "Please tell us the problem you're facing." },
       ];
 
       checks.forEach(({ input, error, test, msg }) => {
         const inputEl = document.getElementById(input);
         const errorEl = document.getElementById(error);
+        if (!inputEl) {
+          console.warn(`Assessment form: no element found with id="${input}". Check that your HTML input's id matches this exactly (it's case-sensitive).`);
+          return; // skip this check instead of crashing the whole form
+        }
         const fieldEl = inputEl.closest(".am-field");
         if (!test(inputEl.value)) {
           setFieldError(fieldEl, errorEl, msg);
@@ -304,6 +310,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
       // Consent — required.
       const consentInput = document.getElementById("amConsent");
+      if (!consentInput) {
+        console.warn('Assessment form: no element found with id="amConsent".');
+        return isValid;
+      }
       const consentField = consentInput.closest(".am-field");
       const consentError = document.getElementById("amConsentError");
       if (!consentInput.checked) {
@@ -328,8 +338,7 @@ document.addEventListener("DOMContentLoaded", () => {
       });
     });
 
-    /* ---------------- submit ---------------- */
-     /* ---------------- Systeme.io direct submission (no backend) ---------------- */
+    /* ---------------- Systeme.io direct submission (no backend) ---------------- */
     // The public form action Systeme.io generated for you. Currently wired
     // to accept: email, first_name, phone_number.
     const SYSTEME_FORM_ACTION = "https://systeme.io/embedded/42474999/subscription";
@@ -391,6 +400,8 @@ document.addEventListener("DOMContentLoaded", () => {
         setTimeout(resolve, 900);
       });
     }
+
+    /* ---------------- submit ---------------- */
     amForm.addEventListener("submit", (e) => {
       e.preventDefault();
       if (!validateAssessmentForm()) {
@@ -407,7 +418,7 @@ document.addEventListener("DOMContentLoaded", () => {
         fullName: formData.get("fullName"),
         workEmail: formData.get("workEmail"),
         phone: `${formData.get("countryCode")} ${formData.get("phone")}`,
-        problem: formData.get("current_problem"),
+        problem: formData.get("problem"),
         contactMethod: formData.get("contactMethod"),
         consent: true,
       };
@@ -455,6 +466,7 @@ document.addEventListener("DOMContentLoaded", () => {
       });
     }
   })();
+
   /* ------------------------------------------------------------
      7. HERO — NEURAL CONSTELLATION (signature element)
      A field of nodes that drift slowly and connect to nearby
