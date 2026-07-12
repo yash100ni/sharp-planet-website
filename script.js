@@ -329,6 +329,68 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     /* ---------------- submit ---------------- */
+     /* ---------------- Systeme.io direct submission (no backend) ---------------- */
+    // The public form action Systeme.io generated for you. Currently wired
+    // to accept: email, first_name, phone_number.
+    const SYSTEME_FORM_ACTION = "https://systeme.io/embedded/42474999/subscription";
+
+    // Maps our form's payload onto Systeme's field names. The first 3 are
+    // confirmed to work. The rest are sent as a best effort — they'll only
+    // be saved if you've added matching fields to the Inline Form inside
+    // Systeme.io (see the README for how to expand this).
+    function buildSystemeFields(payload) {
+      return {
+        email: payload.workEmail,
+        first_name: payload.fullName,
+        phone_number: payload.phone,
+        // best-effort extra — safe to send even if Systeme ignores it until
+        // you add a matching field to the Inline Form (see README)
+        current_problem: payload.problem,
+        preferred_contact_method: payload.contactMethod,
+      };
+    }
+
+    // Posts to Systeme.io via a hidden iframe target. This avoids CORS
+    // issues entirely (Systeme's endpoint isn't built for fetch() reads)
+    // and doesn't navigate the visitor away from the page. The tradeoff:
+    // we can't read a real success/failure response back — the browser
+    // blocks JS from inspecting a cross-origin iframe's contents. So this
+    // resolves optimistically after a short delay. To confirm data is
+    // really arriving, check Contacts in your Systeme.io dashboard after
+    // testing.
+    function submitToSysteme(fields) {
+      return new Promise((resolve) => {
+        let iframe = document.getElementById("amSystemeTarget");
+        if (!iframe) {
+          iframe = document.createElement("iframe");
+          iframe.name = "amSystemeTarget";
+          iframe.id = "amSystemeTarget";
+          iframe.style.display = "none";
+          iframe.setAttribute("aria-hidden", "true");
+          document.body.appendChild(iframe);
+        }
+
+        const form = document.createElement("form");
+        form.method = "POST";
+        form.action = SYSTEME_FORM_ACTION;
+        form.target = "amSystemeTarget";
+        form.style.display = "none";
+
+        Object.entries(fields).forEach(([name, value]) => {
+          const input = document.createElement("input");
+          input.type = "hidden";
+          input.name = name;
+          input.value = value || "";
+          form.appendChild(input);
+        });
+
+        document.body.appendChild(form);
+        form.submit();
+        document.body.removeChild(form);
+
+        setTimeout(resolve, 900);
+      });
+    }
     amForm.addEventListener("submit", (e) => {
       e.preventDefault();
       if (!validateAssessmentForm()) {
