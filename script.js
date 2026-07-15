@@ -661,3 +661,34 @@ document.addEventListener("DOMContentLoaded", () => {
   if (yearEl) yearEl.textContent = new Date().getFullYear();
 
 });
+
+/* ------------------------------------------------------------
+     PRESS LOGOS — dynamic scrolling marquee ("As Featured In")
+     To add, remove, or reorder a logo, edit ONLY the pressLogos
+     array below — nothing else needs to change.
+  ------------------------------------------------------------ */
+  (function initPressLogosMarquee() {
+    const track = document.getElementById("pressLogosTrack");
+    if (!track) return;
+
+    const pressLogos = [
+      { name: "Rajasthan Patrika", src: "assets/images/placeholders/logo-patrika.png" },
+      { name: "Dainik Bhaskar", src: "assets/images/placeholders/logo-bhaskar.png" },
+      { name: "Dainik Navjyoti", src: "assets/images/placeholders/logo-navjyoti.png" },
+      // To add another logo, copy the line above and edit it, e.g.:
+      // { name: "The Times of India", src: "assets/images/placeholders/logo-toi.png" },
+    ];
+
+    function renderLogos(list) {
+      return list
+        .map(
+          (logo) => `
+        <div class="press-logo-item">
+          <img src="${logo.src}" alt="${logo.name}" loading="lazy">
+        </div>`
+        )
+        .join("");
+    }
+
+    track.innerHTML = renderLogos(pressLogos) + renderLogos(pressLogos);
+  })();
