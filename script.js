@@ -675,6 +675,7 @@ document.addEventListener("DOMContentLoaded", () => {
       { name: "Rajasthan Patrika", src: "assets/images/placeholders/logo-patrika.png" },
       { name: "Dainik Bhaskar", src: "assets/images/placeholders/logo-bhaskar.png" },
       { name: "Dainik Navjyoti", src: "assets/images/placeholders/logo-navjyoti.png" },
+      { name: "FM Tadka", src: "assets/images/placeholders/logo-fmtadka.png" },
       // To add another logo, copy the line above and edit it, e.g.:
       // { name: "The Times of India", src: "assets/images/placeholders/logo-toi.png" },
     ];
