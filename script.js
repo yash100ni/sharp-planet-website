@@ -693,3 +693,267 @@ document.addEventListener("DOMContentLoaded", () => {
 
     track.innerHTML = renderLogos(pressLogos) + renderLogos(pressLogos);
   })();
+  /* ------------------------------------------------------------
+     FREE LEARNING GUIDE — Interactive Book Showcase
+     Edit ONLY the bookPages array below to change the preview
+     book's content — nothing else needs to change.
+  ------------------------------------------------------------ */
+  (function initBookShowcase() {
+    const section = document.getElementById("book-showcase");
+    if (!section) return;
+
+    const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+    /* ---------------- entrance animation ---------------- */
+    const bookStage = document.getElementById("book3dStage");
+    const revealEls = section.querySelectorAll(".book-reveal");
+
+    function playEntrance() {
+      if (window.gsap) {
+        gsap.fromTo(
+          bookStage,
+          { opacity: 0, y: 60, rotateZ: -6 },
+          { opacity: 1, y: 0, rotateZ: 0, duration: 1.1, ease: "power3.out" }
+        );
+        gsap.fromTo(
+          revealEls,
+          { opacity: 0, y: 28 },
+          { opacity: 1, y: 0, duration: 0.7, ease: "power3.out", stagger: 0.12, delay: 0.15 }
+        );
+      } else {
+        bookStage.style.opacity = "1";
+        revealEls.forEach((el, i) => setTimeout(() => el.classList.add("is-visible"), i * 120));
+      }
+    }
+
+    if (window.ScrollTrigger) {
+      ScrollTrigger.create({ trigger: section, start: "top 75%", once: true, onEnter: playEntrance });
+    } else {
+      const io = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              playEntrance();
+              io.unobserve(entry.target);
+            }
+          });
+        },
+        { threshold: 0.2 }
+      );
+      io.observe(section);
+    }
+
+    /* ---------------- 3D tilt + light sheen ---------------- */
+    const book3d = document.getElementById("book3d");
+    const sheen = document.getElementById("book3dSheen");
+    const shadow = document.getElementById("book3dShadow");
+
+    function updateTilt(clientX, clientY) {
+      const rect = bookStage.getBoundingClientRect();
+      const px = (clientX - rect.left) / rect.width;
+      const py = (clientY - rect.top) / rect.height;
+      const rotateY = -15 + (px - 0.5) * 26;
+      const rotateX = 4 - (py - 0.5) * 20;
+      book3d.style.transform = `rotateY(${rotateY}deg) rotateX(${rotateX}deg)`;
+      sheen.style.setProperty("--mx", `${px * 100}%`);
+      sheen.style.setProperty("--my", `${py * 100}%`);
+      if (shadow) shadow.style.transform = `translateX(calc(-50% + ${(px - 0.5) * 24}px))`;
+    }
+
+    if (!prefersReducedMotion) {
+      bookStage.addEventListener("mousemove", (e) => updateTilt(e.clientX, e.clientY));
+      bookStage.addEventListener("mouseleave", () => {
+        book3d.style.transform = "rotateY(-15deg) rotateX(4deg)";
+      });
+      bookStage.addEventListener(
+        "touchmove",
+        (e) => {
+          if (e.touches[0]) updateTilt(e.touches[0].clientX, e.touches[0].clientY);
+        },
+        { passive: true }
+      );
+    }
+
+    /* ---------------- particles background ---------------- */
+    const canvas = document.getElementById("bookParticles");
+    if (canvas && !prefersReducedMotion) {
+      const ctx = canvas.getContext("2d");
+      let w, h, particles;
+      function resize() {
+        w = canvas.width = section.offsetWidth;
+        h = canvas.height = section.offsetHeight;
+        particles = Array.from({ length: 36 }, () => ({
+          x: Math.random() * w,
+          y: Math.random() * h,
+          r: Math.random() * 1.6 + 0.6,
+          vy: -(Math.random() * 0.2 + 0.05),
+          o: Math.random() * 0.4 + 0.15,
+        }));
+      }
+      resize();
+      window.addEventListener("resize", resize);
+      function draw() {
+        ctx.clearRect(0, 0, w, h);
+        particles.forEach((p) => {
+          p.y += p.vy;
+          if (p.y < -10) p.y = h + 10;
+          ctx.beginPath();
+          ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+          ctx.fillStyle = `rgba(56,189,248,${p.o})`;
+          ctx.fill();
+        });
+        requestAnimationFrame(draw);
+      }
+      draw();
+    }
+
+    /* ---------------- preview flipbook ---------------- */
+    // Edit this array to change the preview book's content. Each entry is
+    // one page: an eyebrow label, a title, and body text.
+    const bookPages = [
+      { eyebrow: "Introduction", title: "Unlock Your Child's Learning Potential", text: "A quick look inside the Sharp Planet Free Learning Guide — practical, research-backed techniques for how children learn best." },
+      { eyebrow: "Chapter 1", title: "Why Memory Matters", text: "Practical memory techniques that help children retain what they learn for months, not just for the exam." },
+      { eyebrow: "Chapter 2", title: "Building Focus", text: "Simple, parent-friendly strategies to help children sustain deep attention without constant reminders." },
+      { eyebrow: "Chapter 3", title: "Confidence by Design", text: "Science-backed methods that turn small, repeated wins into lasting self-belief." },
+      { eyebrow: "Chapter 4", title: "A 30-Day Starter Plan", text: "An easy, step-by-step plan any family can start using this week." },
+      { eyebrow: "Thank You", title: "Ready for the full guide?", text: "Download the complete guide for free, or book a free assessment to see how KSCode™ can help your child." },
+    ];
+
+    const preview = document.getElementById("bookPreview");
+    const flipStage = document.getElementById("bookFlipStage");
+    const dotsWrap = document.getElementById("bookPreviewDots");
+    const indicator = document.getElementById("bookPageIndicator");
+    const prevBtn = document.getElementById("bookPrevBtn");
+    const nextBtn = document.getElementById("bookNextBtn");
+    const zoomBtn = document.getElementById("bookZoomBtn");
+    const closeBtn = document.getElementById("bookPreviewClose");
+    const previewBtn = document.getElementById("bookPreviewBtn");
+
+    let currentPage = 0;
+    let isZoomed = false;
+
+    function renderPages() {
+      flipStage.innerHTML = bookPages
+        .map(
+          (p, i) => `
+        <div class="book-page" data-index="${i}" style="z-index:${bookPages.length - i}">
+          <span class="book-page__eyebrow">${p.eyebrow}</span>
+          <h3 class="book-page__title">${p.title}</h3>
+          <p class="book-page__text">${p.text}</p>
+          <span class="book-page__num">${i + 1} / ${bookPages.length}</span>
+        </div>`
+        )
+        .join("");
+
+      dotsWrap.innerHTML = bookPages
+        .map((_, i) => `<span class="book-preview__dot" data-index="${i}"></span>`)
+        .join("");
+    }
+    renderPages();
+
+    const pageEls = () => flipStage.querySelectorAll(".book-page");
+    const dotEls = () => dotsWrap.querySelectorAll(".book-preview__dot");
+
+    function updatePreviewUI() {
+      pageEls().forEach((el, i) => el.classList.toggle("is-flipped", i < currentPage));
+      dotEls().forEach((el, i) => el.classList.toggle("is-active", i === currentPage));
+      indicator.textContent = `${currentPage + 1} / ${bookPages.length}`;
+      prevBtn.disabled = currentPage === 0;
+      nextBtn.disabled = currentPage === bookPages.length - 1;
+    }
+
+    function openPreview() {
+      currentPage = 0;
+      updatePreviewUI();
+      preview.classList.add("is-open");
+      document.body.style.overflow = "hidden";
+    }
+    function closePreview() {
+      preview.classList.remove("is-open");
+      document.body.style.overflow = "";
+      flipStage.classList.remove("is-zoomed");
+      isZoomed = false;
+      if (zoomBtn) zoomBtn.innerHTML = '<i data-lucide="zoom-in"></i>';
+      if (window.lucide) lucide.createIcons();
+    }
+    function goNext() {
+      if (currentPage < bookPages.length - 1) {
+        currentPage++;
+        updatePreviewUI();
+      }
+    }
+    function goPrev() {
+      if (currentPage > 0) {
+        currentPage--;
+        updatePreviewUI();
+      }
+    }
+
+    if (previewBtn) previewBtn.addEventListener("click", openPreview);
+    if (closeBtn) closeBtn.addEventListener("click", closePreview);
+    if (nextBtn) nextBtn.addEventListener("click", goNext);
+    if (prevBtn) prevBtn.addEventListener("click", goPrev);
+    dotsWrap.addEventListener("click", (e) => {
+      const dot = e.target.closest(".book-preview__dot");
+      if (!dot) return;
+      currentPage = Number(dot.dataset.index);
+      updatePreviewUI();
+    });
+    if (zoomBtn) {
+      zoomBtn.addEventListener("click", () => {
+        isZoomed = !isZoomed;
+        flipStage.classList.toggle("is-zoomed", isZoomed);
+        zoomBtn.innerHTML = isZoomed ? '<i data-lucide="zoom-out"></i>' : '<i data-lucide="zoom-in"></i>';
+        if (window.lucide) lucide.createIcons();
+      });
+    }
+    preview.addEventListener("click", (e) => {
+      if (e.target === preview) closePreview();
+    });
+    document.addEventListener("keydown", (e) => {
+      if (!preview.classList.contains("is-open")) return;
+      if (e.key === "Escape") closePreview();
+      if (e.key === "ArrowRight") goNext();
+      if (e.key === "ArrowLeft") goPrev();
+    });
+
+    // basic swipe support on mobile
+    let touchStartX = null;
+    flipStage.addEventListener("touchstart", (e) => { touchStartX = e.touches[0].clientX; }, { passive: true });
+    flipStage.addEventListener(
+      "touchend",
+      (e) => {
+        if (touchStartX === null) return;
+        const dx = e.changedTouches[0].clientX - touchStartX;
+        if (dx > 50) goPrev();
+        else if (dx < -50) goNext();
+        touchStartX = null;
+      },
+      { passive: true }
+    );
+
+    /* ---------------- download flow ---------------- */
+    const downloadBtn = document.getElementById("bookDownloadBtn");
+    if (downloadBtn) {
+      downloadBtn.addEventListener("click", () => {
+        if (downloadBtn.classList.contains("is-loading")) return;
+        downloadBtn.classList.add("is-loading");
+
+        setTimeout(() => {
+          downloadBtn.classList.remove("is-loading");
+          downloadBtn.classList.add("is-success");
+
+          const link = document.createElement("a");
+          link.href = downloadBtn.dataset.file;
+          link.download = downloadBtn.dataset.filename || "";
+          document.body.appendChild(link);
+          link.click();
+          document.body.removeChild(link);
+
+          setTimeout(() => {
+            downloadBtn.classList.remove("is-success");
+          }, 2200);
+        }, 1100);
+      });
+    }
+  })();
