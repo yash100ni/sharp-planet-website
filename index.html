@@ -1110,6 +1110,100 @@
   </div>
 </section>
 
+ <!-- =========================================================
+     NEW K. FREE LEARNING GUIDE — Interactive Book Showcase
+========================================================= -->
+<section class="book-showcase" id="book-showcase">
+  <canvas id="bookParticles" class="book-showcase__particles" aria-hidden="true"></canvas>
+  <div class="book-showcase__glow book-showcase__glow--1" aria-hidden="true"></div>
+  <div class="book-showcase__glow book-showcase__glow--2" aria-hidden="true"></div>
+
+  <div class="container book-showcase__grid">
+
+    <!-- Left: 3D book mockup -->
+    <div class="book3d-stage" id="book3dStage">
+      <div class="book3d-float">
+        <div class="book3d" id="book3d">
+          <div class="book3d__pages-back"></div>
+          <div class="book3d__pages-side"></div>
+          <div class="book3d__spine"></div>
+          <div class="book3d__cover">
+            <img src="assets/images/book-cover.jpg" alt="Sharp Planet Free Learning Guide cover" loading="lazy">
+            <div class="book3d__sheen" id="book3dSheen"></div>
+          </div>
+        </div>
+      </div>
+      <div class="book3d-shadow" id="book3dShadow"></div>
+    </div>
+
+    <!-- Right: info + CTAs -->
+    <div class="book-showcase__copy">
+      <p class="eyebrow eyebrow--dark book-reveal"><span class="eyebrow__dot"></span> Free Learning Guide</p>
+      <h2 class="section-title book-reveal">Unlock Your Child's<br>Learning Potential</h2>
+      <p class="section-lead book-reveal">
+        Download our research-backed guide packed with practical techniques,
+        memory strategies, and learning insights trusted by parents and educators.
+      </p>
+
+      <ul class="book-benefits">
+        <li class="book-reveal"><i data-lucide="check-circle"></i> Practical memory techniques</li>
+        <li class="book-reveal"><i data-lucide="check-circle"></i> Parent-friendly strategies</li>
+        <li class="book-reveal"><i data-lucide="check-circle"></i> Science-backed learning methods</li>
+        <li class="book-reveal"><i data-lucide="check-circle"></i> Easy to understand</li>
+        <li class="book-reveal"><i data-lucide="check-circle"></i> Completely free</li>
+      </ul>
+
+      <div class="book-showcase__actions book-reveal">
+        <button type="button" class="btn btn--primary btn--large magnetic book-download-btn" id="bookDownloadBtn" data-file="assets/downloads/sharp-planet-learning-guide.pdf" data-filename="Sharp-Planet-Free-Learning-Guide.pdf">
+          <span class="book-download-btn__label">
+            <i data-lucide="download"></i> Download Free Book
+          </span>
+          <span class="book-download-btn__spinner" aria-hidden="true"></span>
+          <span class="book-download-btn__check" aria-hidden="true"><i data-lucide="check"></i></span>
+        </button>
+        <button type="button" class="btn btn--ghost btn--large magnetic" id="bookPreviewBtn">
+          <i data-lucide="book-open"></i> Preview Book
+        </button>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- Fullscreen Book Preview modal -->
+<div class="book-preview" id="bookPreview" role="dialog" aria-modal="true" aria-label="Book preview">
+  <div class="book-preview__toolbar">
+    <span class="book-preview__indicator" id="bookPageIndicator">1 / 6</span>
+    <div class="book-preview__toolbar-actions">
+      <button type="button" class="book-preview__icon-btn" id="bookZoomBtn" aria-label="Zoom">
+        <i data-lucide="zoom-in"></i>
+      </button>
+      <button type="button" class="book-preview__icon-btn" id="bookPreviewClose" aria-label="Close preview">
+        <i data-lucide="x"></i>
+      </button>
+    </div>
+  </div>
+
+  <div class="book-flipbook" id="bookFlipbook">
+    <button type="button" class="book-flip-nav book-flip-nav--prev" id="bookPrevBtn" aria-label="Previous page">
+      <i data-lucide="chevron-left"></i>
+    </button>
+
+    <div class="book-flip-stage" id="bookFlipStage">
+      <!-- Pages are rendered by JS from the bookPages array in script.js
+           (search for "FREE LEARNING GUIDE — Interactive Book Showcase")
+           so editing the book's preview content never requires touching
+           this HTML. -->
+    </div>
+
+    <button type="button" class="book-flip-nav book-flip-nav--next" id="bookNextBtn" aria-label="Next page">
+      <i data-lucide="chevron-right"></i>
+    </button>
+  </div>
+
+  <div class="book-preview__dots" id="bookPreviewDots"></div>
+</div>              
+
 <!-- =========================================================
      11. FINAL CTA
 ========================================================= -->
