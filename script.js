@@ -957,3 +957,28 @@ document.addEventListener("DOMContentLoaded", () => {
       });
     }
   })();
+// YouTube testimonial lightbox
+const videoModal = document.getElementById('videoModal');
+const videoRatio = document.getElementById('videoModalRatio');
+
+function openVideoModal(videoId){
+  videoRatio.innerHTML = `<iframe
+    src="https://www.youtube-nocookie.com/embed/${videoId}?autoplay=1&rel=0"
+    title="Testimonial video" allow="autoplay; encrypted-media" allowfullscreen></iframe>`;
+  videoModal.classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+function closeVideoModal(){
+  videoModal.classList.remove('open');
+  videoRatio.innerHTML = ''; // stops playback
+  document.body.style.overflow = '';
+}
+document.querySelectorAll('.play-btn').forEach(btn=>{
+  btn.addEventListener('click', ()=> openVideoModal(btn.dataset.video));
+});
+document.querySelectorAll('[data-close]').forEach(el=>{
+  el.addEventListener('click', closeVideoModal);
+});
+document.addEventListener('keydown', e=>{
+  if(e.key === 'Escape') closeVideoModal();
+});
